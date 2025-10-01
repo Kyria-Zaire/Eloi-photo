@@ -242,6 +242,19 @@ pm2 save
 
 ### Option 2: Plateformes cloud
 
+#### Vercel (Frontend + API serverless)
+
+1. Connecte le repo GitHub à Vercel
+2. Variables d'environnement à définir (Project Settings → Environment Variables):
+   - `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS`
+   - `PHOTOGRAPHER_EMAIL`
+   - `FRONTEND_URL` = URL Vercel (ex: https://eloi-photo.vercel.app)
+3. Fichier `vercel.json` gère:
+   - build de `api/index.js` (API Node serverless)
+   - serve de `frontend/**` en statique
+   - routes `/api/*` → `api/index.js`
+4. Déploiement: chaque push sur `main` déclenche un build
+
 #### Vercel (Frontend uniquement)
 ```bash
 npm install -g vercel
