@@ -1,0 +1,2465 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>Administration - click.storm51</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', Arial, sans-serif;
+            background: #f5f7fa;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+
+        .header h1 {
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #ff6b35, #ff8c5a);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .stat-card.pending {
+            background: linear-gradient(135deg, #ff9a56, #ffb366);
+        }
+
+        .stat-card.approved {
+            background: linear-gradient(135deg, #ff6b35, #ff8c5a);
+        }
+
+        .stat-card.rejected {
+            background: linear-gradient(135deg, #ff8c5a, #ffb380);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-label {
+            font-size: 0.875rem;
+            opacity: 0.9;
+        }
+
+        .filters {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .filter-btn {
+            padding: 0.75rem 1.5rem;
+            border: 2px solid #e0e0e0;
+            background: white;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn.active {
+            background: linear-gradient(135deg, #ff6b35, #ff8c5a);
+            color: white;
+            border-color: #ff6b35;
+        }
+
+        .filter-btn:hover {
+            border-color: #ff6b35;
+        }
+
+        .reviews-grid {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .review-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: relative;
+        }
+
+        .review-card.pending {
+            border-left: 5px solid #f5576c;
+        }
+
+        .review-card.approved {
+            border-left: 5px solid #00f2fe;
+        }
+
+        .review-card.rejected {
+            border-left: 5px solid #999;
+            opacity: 0.7;
+        }
+
+        .review-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 1rem;
+        }
+
+        .review-info h3 {
+            color: #2c3e50;
+            margin-bottom: 0.25rem;
+        }
+
+        .review-meta {
+            color: #666;
+            font-size: 0.875rem;
+        }
+
+        .review-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .badge-pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .badge-approved {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .badge-rejected {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .stars {
+            color: #ffc107;
+            font-size: 1.25rem;
+            margin: 0.5rem 0;
+        }
+
+        .review-comment {
+            color: #333;
+            line-height: 1.6;
+            margin: 1rem 0;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+
+        .review-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-approve {
+            background: #28a745;
+            color: white;
+        }
+
+        .btn-approve:hover {
+            background: #218838;
+        }
+
+        .btn-reject {
+            background: #dc3545;
+            color: white;
+        }
+
+        .btn-reject:hover {
+            background: #c82333;
+        }
+
+        .btn-delete {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-delete:hover {
+            background: #5a6268;
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: #999;
+        }
+
+        .empty-state svg {
+            width: 100px;
+            height: 100px;
+            margin-bottom: 1rem;
+            opacity: 0.3;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 1.5rem;
+            color: #ff6b35;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        .service-tag {
+            background: #e3f2fd;
+            color: #1976d2;
+            padding: 0.25rem 0.75rem;
+            border-radius: 15px;
+            font-size: 0.75rem;
+            margin-right: 0.5rem;
+        }
+
+        .section-content {
+            display: none;
+        }
+
+        .section-content.active {
+            display: block;
+        }
+
+        .tab-main {
+            transition: all 0.3s ease;
+        }
+
+        .tab-main:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .filter-btn-msg {
+            padding: 0.75rem 1.5rem;
+            border: 2px solid #e0e0e0;
+            background: white;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn-msg.active {
+            background: linear-gradient(135deg, #ff6b35, #ff8c5a);
+            color: white;
+            border-color: #ff6b35;
+        }
+
+        .filter-btn-msg:hover {
+            border-color: #ff6b35;
+        }
+
+        .message-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: relative;
+        }
+
+        .message-card.unread {
+            border-left: 5px solid #ff6b35;
+            background: #fffaf7;
+        }
+
+        .message-card.in_progress {
+            border-left: 5px solid #ffc107;
+        }
+
+        .message-card.done {
+            border-left: 5px solid #28a745;
+            opacity: 0.8;
+        }
+
+        .message-card.archived {
+            border-left: 5px solid #999;
+            opacity: 0.6;
+        }
+
+        .status-select {
+            padding: 0.5rem 1rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            background: white;
+        }
+
+        .filter-btn-portfolio {
+            padding: 0.75rem 1.5rem;
+            border: 2px solid #e0e0e0;
+            background: white;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn-portfolio.active {
+            background: linear-gradient(135deg, #ff6b35, #ff8c5a);
+            color: white;
+            border-color: #ff6b35;
+        }
+
+        .filter-btn-portfolio:hover {
+            border-color: #ff6b35;
+        }
+
+        .portfolio-item-admin {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .portfolio-item-admin:hover {
+            transform: translateY(-5px);
+        }
+
+        .portfolio-item-admin img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+        }
+
+        .portfolio-item-content {
+            padding: 1rem;
+        }
+
+        .filter-btn-quotes {
+            padding: 0.75rem 1.5rem;
+            border: 2px solid #e0e0e0;
+            background: white;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn-quotes.active {
+            background: linear-gradient(135deg, #ff6b35, #ff8c5a);
+            color: white;
+            border-color: #ff6b35;
+        }
+
+        .filter-btn-quotes:hover {
+            border-color: #ff6b35;
+        }
+
+        .quote-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .quote-card.draft {
+            border-left: 5px solid #999;
+        }
+
+        .quote-card.sent {
+            border-left: 5px solid #ffc107;
+        }
+
+        .quote-card.accepted {
+            border-left: 5px solid #28a745;
+        }
+
+        .quote-card.rejected {
+            border-left: 5px solid #dc3545;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="/" class="back-link">← Retour au site</a>
+
+        <div class="header">
+            <h1>🛡️ Administration</h1>
+            <p style="color: #666;">Tableau de bord</p>
+
+            <!-- Onglets principaux -->
+            <div style="display: flex; gap: 0.5rem; margin-top: 1.5rem; margin-bottom: 1.5rem; flex-wrap: wrap;">
+                <button class="tab-main active" data-tab="stats" style="flex: 1; min-width: 140px; padding: 0.875rem; background: linear-gradient(135deg, #ff6b35, #ff8c5a); color: white; border: none; border-radius: 10px; font-weight: 600; cursor: pointer; font-size: 0.85rem;">
+                    📈 Stats
+                </button>
+                <button class="tab-main" data-tab="reviews" style="flex: 1; min-width: 140px; padding: 0.875rem; background: white; color: #333; border: 2px solid #e0e0e0; border-radius: 10px; font-weight: 600; cursor: pointer; font-size: 0.85rem;">
+                    ⭐ Avis
+                </button>
+                <button class="tab-main" data-tab="messages" style="flex: 1; min-width: 140px; padding: 0.875rem; background: white; color: #333; border: 2px solid #e0e0e0; border-radius: 10px; font-weight: 600; cursor: pointer; font-size: 0.85rem;">
+                    📬 Messages
+                </button>
+                <button class="tab-main" data-tab="calendar" style="flex: 1; min-width: 140px; padding: 0.875rem; background: white; color: #333; border: 2px solid #e0e0e0; border-radius: 10px; font-weight: 600; cursor: pointer; font-size: 0.85rem;">
+                    📅 Agenda
+                </button>
+                <button class="tab-main" data-tab="portfolio" style="flex: 1; min-width: 140px; padding: 0.875rem; background: white; color: #333; border: 2px solid #e0e0e0; border-radius: 10px; font-weight: 600; cursor: pointer; font-size: 0.85rem;">
+                    📸 Photos
+                </button>
+                <button class="tab-main" data-tab="quotes" style="flex: 1; min-width: 140px; padding: 0.875rem; background: white; color: #333; border: 2px solid #e0e0e0; border-radius: 10px; font-weight: 600; cursor: pointer; font-size: 0.85rem;">
+                    💰 Devis
+                </button>
+                <button class="tab-main" data-tab="templates" style="flex: 1; min-width: 140px; padding: 0.875rem; background: white; color: #333; border: 2px solid #e0e0e0; border-radius: 10px; font-weight: 600; cursor: pointer; font-size: 0.85rem;">
+                    📧 Emails
+                </button>
+            </div>
+
+            <div class="stats" id="stats">
+                <!-- Stats will be loaded here -->
+            </div>
+        </div>
+
+        <!-- Section Statistiques -->
+        <div class="section-content active" id="stats-section">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
+                <div style="background: white; padding: 2rem; border-radius: 15px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+                    <h3 style="color: #666; font-size: 0.875rem; margin-bottom: 0.5rem;">📬 Messages</h3>
+                    <div style="font-size: 2.5rem; font-weight: 800; color: #ff6b35;" id="stat-messages">0</div>
+                    <div style="font-size: 0.875rem; color: #666; margin-top: 0.5rem;" id="stat-messages-month">0 ce mois</div>
+                </div>
+
+                <div style="background: white; padding: 2rem; border-radius: 15px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+                    <h3 style="color: #666; font-size: 0.875rem; margin-bottom: 0.5rem;">⭐ Note moyenne</h3>
+                    <div style="font-size: 2.5rem; font-weight: 800; color: #ffc107;" id="stat-rating">0</div>
+                    <div style="font-size: 0.875rem; color: #666; margin-top: 0.5rem;" id="stat-reviews-count">0 avis</div>
+                </div>
+
+                <div style="background: white; padding: 2rem; border-radius: 15px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+                    <h3 style="color: #666; font-size: 0.875rem; margin-bottom: 0.5rem;">💰 CA Total</h3>
+                    <div style="font-size: 2.5rem; font-weight: 800; color: #28a745;" id="stat-revenue">0 €</div>
+                    <div style="font-size: 0.875rem; color: #666; margin-top: 0.5rem;" id="stat-revenue-year">0 € cette année</div>
+                </div>
+
+                <div style="background: white; padding: 2rem; border-radius: 15px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+                    <h3 style="color: #666; font-size: 0.875rem; margin-bottom: 0.5rem;">📅 Prestations à venir</h3>
+                    <div style="font-size: 2.5rem; font-weight: 800; color: #667eea;" id="stat-bookings">0</div>
+                    <div style="font-size: 0.875rem; color: #666; margin-top: 0.5rem;">Réservations confirmées</div>
+                </div>
+            </div>
+
+            <!-- Performance par service -->
+            <div style="background: white; padding: 2rem; border-radius: 15px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); margin-bottom: 2rem;">
+                <h3 style="color: #2c3e50; margin-bottom: 1.5rem;">📊 Performance par type de service</h3>
+                <div id="servicePerformance" style="display: grid; gap: 1rem;">
+                    <!-- Service stats will be loaded here -->
+                </div>
+            </div>
+
+            <!-- Graphique mensuel -->
+            <div style="background: white; padding: 2rem; border-radius: 15px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); margin-bottom: 2rem;">
+                <h3 style="color: #2c3e50; margin-bottom: 1.5rem;">📈 Évolution sur 6 mois</h3>
+                <div id="monthlyChart" style="overflow-x: auto;">
+                    <!-- Chart will be rendered here -->
+                </div>
+            </div>
+
+            <!-- Export CSV -->
+            <div style="background: white; padding: 2rem; border-radius: 15px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); margin-bottom: 2rem;">
+                <h3 style="color: #2c3e50; margin-bottom: 1.5rem;">📥 Exporter les données</h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+                    <a href="/api/stats/export/messages" download class="btn btn-approve" style="text-decoration: none; display: inline-block; text-align: center;">📬 Messages CSV</a>
+                    <a href="/api/stats/export/reviews" download class="btn btn-approve" style="text-decoration: none; display: inline-block; text-align: center;">⭐ Avis CSV</a>
+                    <a href="/api/stats/export/quotes" download class="btn btn-approve" style="text-decoration: none; display: inline-block; text-align: center;">💰 Devis CSV</a>
+                    <a href="/api/stats/export/bookings" download class="btn btn-approve" style="text-decoration: none; display: inline-block; text-align: center;">📅 Réservations CSV</a>
+                </div>
+            </div>
+
+            <!-- Activité récente -->
+            <div style="background: white; padding: 2rem; border-radius: 15px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+                <h3 style="color: #2c3e50; margin-bottom: 1.5rem;">🔔 Activité récente</h3>
+                <div id="recentActivity">
+                    <!-- Recent activity will be loaded here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Section Avis -->
+        <div class="section-content" id="reviews-section">
+            <div class="filters">
+                <button class="filter-btn active" data-filter="all">Tous</button>
+                <button class="filter-btn" data-filter="pending">En attente</button>
+                <button class="filter-btn" data-filter="approved">Approuvés</button>
+                <button class="filter-btn" data-filter="rejected">Rejetés</button>
+            </div>
+
+            <div class="reviews-grid" id="reviewsGrid">
+                <!-- Reviews will be loaded here -->
+            </div>
+        </div>
+
+        <!-- Section Messages -->
+        <div class="section-content" id="messages-section">
+            <div class="filters">
+                <button class="filter-btn-msg active" data-filter="all">Tous</button>
+                <button class="filter-btn-msg" data-filter="unread">Non lus</button>
+                <button class="filter-btn-msg" data-filter="in_progress">En cours</button>
+                <button class="filter-btn-msg" data-filter="done">Traités</button>
+                <button class="filter-btn-msg" data-filter="archived">Archivés</button>
+            </div>
+
+            <div class="reviews-grid" id="messagesGrid">
+                <!-- Messages will be loaded here -->
+            </div>
+        </div>
+
+        <!-- Section Calendrier -->
+        <div class="section-content" id="calendar-section">
+            <div style="background: white; padding: 2rem; border-radius: 15px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); margin-bottom: 2rem;">
+                <h3 style="margin-bottom: 1.5rem; color: #2c3e50;">📅 Gérer les disponibilités</h3>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+                    <div>
+                        <h4 style="margin-bottom: 1rem; color: #666;">Bloquer une date</h4>
+                        <input type="date" id="blockDate" style="width: 100%; padding: 0.75rem; border: 2px solid #e0e0e0; border-radius: 8px; margin-bottom: 0.5rem;">
+                        <input type="text" id="blockReason" placeholder="Raison (optionnel)" style="width: 100%; padding: 0.75rem; border: 2px solid #e0e0e0; border-radius: 8px; margin-bottom: 1rem;">
+                        <button class="btn btn-approve" data-action="block-date" style="width: 100%;">🚫 Bloquer cette date</button>
+                    </div>
+
+                    <div>
+                        <h4 style="margin-bottom: 1rem; color: #666;">Ajouter une réservation</h4>
+                        <input type="date" id="bookingDate" style="width: 100%; padding: 0.75rem; border: 2px solid #e0e0e0; border-radius: 8px; margin-bottom: 0.5rem;">
+                        <input type="text" id="bookingClient" placeholder="Nom du client *" style="width: 100%; padding: 0.75rem; border: 2px solid #e0e0e0; border-radius: 8px; margin-bottom: 0.5rem;">
+                        <select id="bookingService" style="width: 100%; padding: 0.75rem; border: 2px solid #e0e0e0; border-radius: 8px; margin-bottom: 0.5rem;">
+                            <option value="">Type de service</option>
+                            <option value="wedding">Mariage</option>
+                            <option value="portrait">Portrait</option>
+                            <option value="event">Événement</option>
+                            <option value="corporate">Corporate</option>
+                        </select>
+                        <input type="text" id="bookingNotes" placeholder="Notes (optionnel)" style="width: 100%; padding: 0.75rem; border: 2px solid #e0e0e0; border-radius: 8px; margin-bottom: 1rem;">
+                        <button class="btn btn-approve" data-action="add-booking" style="width: 100%;">➕ Ajouter la réservation</button>
+                    </div>
+                </div>
+            </div>
+
+            <div style="background: white; padding: 2rem; border-radius: 15px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); margin-bottom: 2rem;">
+                <h3 style="margin-bottom: 1.5rem; color: #2c3e50;">📊 Vue du calendrier</h3>
+                <div id="calendarView" style="min-height: 400px;">
+                    <!-- Calendar will be rendered here -->
+                </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+                <div style="background: white; padding: 2rem; border-radius: 15px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+                    <h3 style="margin-bottom: 1rem; color: #2c3e50;">🚫 Dates bloquées</h3>
+                    <div id="blockedDatesList">
+                        <!-- Blocked dates will be listed here -->
+                    </div>
+                </div>
+
+                <div style="background: white; padding: 2rem; border-radius: 15px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+                    <h3 style="margin-bottom: 1rem; color: #2c3e50;">📆 Réservations confirmées</h3>
+                    <div id="bookingsList">
+                        <!-- Bookings will be listed here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section Portfolio -->
+        <div class="section-content" id="portfolio-section">
+            <div style="background: white; padding: 2rem; border-radius: 15px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); margin-bottom: 2rem;">
+                <h3 style="margin-bottom: 1.5rem; color: #2c3e50;">📸 Ajouter une nouvelle photo</h3>
+                
+                <form id="uploadForm" style="display: grid; gap: 1rem;">
+                    <div>
+                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #666;">Image * (max 10MB)</label>
+                        <input type="file" id="imageFile" accept="image/jpeg,image/jpg,image/png,image/webp" required style="width: 100%; padding: 0.75rem; border: 2px solid #e0e0e0; border-radius: 8px;">
+                        <div id="imagePreview" style="margin-top: 1rem; display: none;">
+                            <img id="previewImg" style="max-width: 300px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+                        </div>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <div>
+                            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #666;">Titre *</label>
+                            <input type="text" id="imageTitle" placeholder="Ex: Mariage romantique" required style="width: 100%; padding: 0.75rem; border: 2px solid #e0e0e0; border-radius: 8px;">
+                        </div>
+
+                        <div>
+                            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #666;">Catégorie *</label>
+                            <select id="imageCategory" required style="width: 100%; padding: 0.75rem; border: 2px solid #e0e0e0; border-radius: 8px;">
+                                <option value="">Sélectionner...</option>
+                                <option value="wedding">Mariage</option>
+                                <option value="portrait">Portrait</option>
+                                <option value="event">Événement</option>
+                                <option value="corporate">Corporate</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #666;">Description</label>
+                        <input type="text" id="imageDescription" placeholder="Ex: Château des Crayères • Reims" style="width: 100%; padding: 0.75rem; border: 2px solid #e0e0e0; border-radius: 8px;">
+                    </div>
+
+                    <button type="submit" class="btn btn-approve" style="padding: 1rem; font-size: 1rem;" id="uploadBtn">
+                        📤 Ajouter au portfolio
+                    </button>
+                </form>
+            </div>
+
+            <div style="background: white; padding: 2rem; border-radius: 15px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); margin-bottom: 2rem;">
+                <h3 style="margin-bottom: 1.5rem; color: #2c3e50;">🗂️ Filtrer par catégorie</h3>
+                <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                    <button class="filter-btn-portfolio active" data-category="all">Tout voir</button>
+                    <button class="filter-btn-portfolio" data-category="wedding">Mariage</button>
+                    <button class="filter-btn-portfolio" data-category="portrait">Portrait</button>
+                    <button class="filter-btn-portfolio" data-category="event">Événement</button>
+                    <button class="filter-btn-portfolio" data-category="corporate">Corporate</button>
+                </div>
+            </div>
+
+            <div id="portfolioGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem;">
+                <!-- Portfolio items will be loaded here -->
+            </div>
+        </div>
+
+        <!-- Section Devis -->
+        <div class="section-content" id="quotes-section">
+            <div style="background: white; padding: 2rem; border-radius: 15px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); margin-bottom: 2rem;">
+                <h3 style="margin-bottom: 1.5rem; color: #2c3e50;">💰 Créer un nouveau devis</h3>
+                
+                <form id="quoteForm" style="display: grid; gap: 1rem;">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <div>
+                            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #666;">Nom du client *</label>
+                            <input type="text" id="quoteClientName" required style="width: 100%; padding: 0.75rem; border: 2px solid #e0e0e0; border-radius: 8px;">
+                        </div>
+                        <div>
+                            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #666;">Email *</label>
+                            <input type="email" id="quoteClientEmail" required style="width: 100%; padding: 0.75rem; border: 2px solid #e0e0e0; border-radius: 8px;">
+                        </div>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <div>
+                            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #666;">Téléphone</label>
+                            <input type="tel" id="quoteClientPhone" style="width: 100%; padding: 0.75rem; border: 2px solid #e0e0e0; border-radius: 8px;">
+                        </div>
+                        <div>
+                            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #666;">Service *</label>
+                            <select id="quoteService" required style="width: 100%; padding: 0.75rem; border: 2px solid #e0e0e0; border-radius: 8px;">
+                                <option value="">Sélectionner...</option>
+                                <option value="wedding">Mariage</option>
+                                <option value="portrait">Portrait</option>
+                                <option value="event">Événement</option>
+                                <option value="corporate">Corporate</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #666;">Date de prestation</label>
+                        <input type="date" id="quoteDate" style="width: 100%; padding: 0.75rem; border: 2px solid #e0e0e0; border-radius: 8px;">
+                    </div>
+
+                    <div>
+                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #666;">Prestations (une par ligne)</label>
+                        <div id="quoteItems">
+                            <div class="quote-item-row" style="display: grid; grid-template-columns: 2fr 1fr 1fr 50px; gap: 0.5rem; margin-bottom: 0.5rem;">
+                                <input type="text" placeholder="Description" class="item-desc" style="padding: 0.75rem; border: 2px solid #e0e0e0; border-radius: 8px;">
+                                <input type="number" placeholder="Qté" value="1" min="1" class="item-qty" style="padding: 0.75rem; border: 2px solid #e0e0e0; border-radius: 8px;">
+                                <input type="number" placeholder="Prix €" class="item-price" step="0.01" style="padding: 0.75rem; border: 2px solid #e0e0e0; border-radius: 8px;">
+                                <button type="button" onclick="removeQuoteItem(this)" class="btn btn-delete" style="padding: 0.75rem;">×</button>
+                            </div>
+                        </div>
+                        <button type="button" onclick="addQuoteItem()" class="btn btn-approve" style="margin-top: 0.5rem; width: 100%;">+ Ajouter une ligne</button>
+                    </div>
+
+                    <div>
+                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #666;">Notes</label>
+                        <textarea id="quoteNotes" placeholder="Conditions particulières, remarques..." style="width: 100%; padding: 0.75rem; border: 2px solid #e0e0e0; border-radius: 8px; min-height: 80px;"></textarea>
+                    </div>
+
+                    <div style="background: #f8f9fa; padding: 1.5rem; border-radius: 8px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span style="font-size: 1.25rem; font-weight: 600;">TOTAL :</span>
+                            <span id="quoteTotal" style="font-size: 2rem; font-weight: 800; color: #ff6b35;">0,00 €</span>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-approve" style="padding: 1rem; font-size: 1rem;" id="createQuoteBtn">
+                        💾 Créer le devis
+                    </button>
+                </form>
+            </div>
+
+            <div style="background: white; padding: 2rem; border-radius: 15px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); margin-bottom: 2rem;">
+                <h3 style="margin-bottom: 1.5rem; color: #2c3e50;">📋 Filtrer les devis</h3>
+                <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                    <button class="filter-btn-quotes active" data-status="all">Tous</button>
+                    <button class="filter-btn-quotes" data-status="draft">Brouillons</button>
+                    <button class="filter-btn-quotes" data-status="sent">Envoyés</button>
+                    <button class="filter-btn-quotes" data-status="accepted">Acceptés</button>
+                    <button class="filter-btn-quotes" data-status="rejected">Rejetés</button>
+                </div>
+            </div>
+
+            <div id="quotesGrid" style="display: grid; gap: 1.5rem;">
+                <!-- Quotes will be loaded here -->
+            </div>
+        </div>
+
+        <!-- Section Templates -->
+        <div class="section-content" id="templates-section">
+            <div style="background: white; padding: 2rem; border-radius: 15px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); margin-bottom: 2rem;">
+                <h3 style="margin-bottom: 1rem; color: #2c3e50;">📧 Templates d'emails disponibles</h3>
+                <p style="color: #666; margin-bottom: 1.5rem;">Personnalisez vos emails automatiques. Utilisez {{variable}} pour insérer des données dynamiques.</p>
+                
+                <div id="templatesList" style="display: grid; gap: 1rem;">
+                    <!-- Templates will be loaded here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentTab = 'stats';
+        let currentFilter = 'all';
+        let currentFilterMsg = 'all';
+        let allReviews = [];
+        let allMessages = [];
+        let dashboardStats = null;
+
+        // Tab switching
+        document.querySelectorAll('.tab-main').forEach(tab => {
+            tab.addEventListener('click', () => {
+                const targetTab = tab.dataset.tab;
+                
+                // Update tab buttons
+                document.querySelectorAll('.tab-main').forEach(t => {
+                    if (t.dataset.tab === targetTab) {
+                        t.style.background = 'linear-gradient(135deg, #ff6b35, #ff8c5a)';
+                        t.style.color = 'white';
+                        t.style.border = 'none';
+                        t.classList.add('active');
+                    } else {
+                        t.style.background = 'white';
+                        t.style.color = '#333';
+                        t.style.border = '2px solid #e0e0e0';
+                        t.classList.remove('active');
+                    }
+                });
+
+                // Update sections
+                document.querySelectorAll('.section-content').forEach(section => {
+                    section.classList.remove('active');
+                });
+                document.getElementById(targetTab + '-section').classList.add('active');
+
+                currentTab = targetTab;
+
+                // Load appropriate data
+                if (targetTab === 'stats') {
+                    loadDashboardStats();
+                } else if (targetTab === 'reviews') {
+                    loadReviews();
+                } else if (targetTab === 'messages') {
+                    loadMessages();
+                } else if (targetTab === 'calendar') {
+                    loadCalendar();
+                    setupCalendarActionsOnce();
+                } else if (targetTab === 'portfolio') {
+                    loadPortfolioAdmin();
+                } else if (targetTab === 'quotes') {
+                    loadQuotes();
+                } else if (targetTab === 'templates') {
+                    loadTemplates();
+                }
+            });
+        });
+
+        // Ensure calendar actions are bound once (CSP-safe)
+        let calendarActionsBound = false;
+        function setupCalendarActionsOnce() {
+            if (calendarActionsBound) return;
+            calendarActionsBound = true;
+
+            const calendarSection = document.getElementById('calendar-section');
+            if (!calendarSection) return;
+
+            calendarSection.addEventListener('click', async (e) => {
+                const btn = e.target.closest('button[data-action]');
+                if (!btn) return;
+
+                const action = btn.getAttribute('data-action');
+
+                if (action === 'block-date') {
+                    await blockDate();
+                } else if (action === 'add-booking') {
+                    await addBooking();
+                }
+            });
+        }
+
+        // Load reviews
+        async function loadReviews() {
+            try {
+                const params = currentFilter !== 'all' ? `?status=${currentFilter}` : '';
+                const response = await fetch(`/api/reviews/admin${params}`);
+                const data = await response.json();
+
+                if (data.success) {
+                    allReviews = data.reviews;
+                    updateStats(data.stats);
+                    displayReviews(data.reviews);
+                }
+            } catch (error) {
+                console.error('Erreur chargement avis:', error);
+            }
+        }
+
+        // Update stats
+        function updateStats(stats) {
+            const statsHTML = `
+                <div class="stat-card">
+                    <div class="stat-number">${stats.total}</div>
+                    <div class="stat-label">Total</div>
+                </div>
+                <div class="stat-card pending">
+                    <div class="stat-number">${stats.pending}</div>
+                    <div class="stat-label">En attente</div>
+                </div>
+                <div class="stat-card approved">
+                    <div class="stat-number">${stats.approved}</div>
+                    <div class="stat-label">Approuvés</div>
+                </div>
+                <div class="stat-card rejected">
+                    <div class="stat-number">${stats.rejected}</div>
+                    <div class="stat-label">Rejetés</div>
+                </div>
+            `;
+            document.getElementById('stats').innerHTML = statsHTML;
+        }
+
+        // Display reviews
+        function displayReviews(reviews) {
+            const grid = document.getElementById('reviewsGrid');
+
+            if (reviews.length === 0) {
+                grid.innerHTML = `
+                    <div class="empty-state">
+                        <div style="font-size: 4rem;">📭</div>
+                        <h3>Aucun avis</h3>
+                        <p>Aucun avis à afficher pour le moment</p>
+                    </div>
+                `;
+                return;
+            }
+
+            const serviceNames = {
+                wedding: 'Mariage',
+                portrait: 'Portrait',
+                event: 'Événement',
+                corporate: 'Corporate',
+                commercial: 'Commercial',
+                artistic: 'Artistique'
+            };
+
+            grid.innerHTML = reviews.map(review => `
+                <div class="review-card ${review.status}">
+                    <div class="review-header">
+                        <div class="review-info">
+                            <h3>${review.name}</h3>
+                            <div class="review-meta">
+                                ${review.email} • 
+                                <span class="service-tag">${serviceNames[review.service] || review.service}</span>
+                                ${review.date || ''}
+                            </div>
+                            <div class="review-meta" style="margin-top: 0.25rem; font-size: 0.75rem;">
+                                Reçu le ${new Date(review.createdAt).toLocaleDateString('fr-FR', {
+                                    day: 'numeric',
+                                    month: 'long',
+                                    year: 'numeric',
+                                    hour: '2-digit',
+                                    minute: '2-digit'
+                                })}
+                            </div>
+                        </div>
+                        <span class="review-badge badge-${review.status}">
+                            ${review.status === 'pending' ? 'En attente' : review.status === 'approved' ? 'Approuvé' : 'Rejeté'}
+                        </span>
+                    </div>
+
+                    <div class="stars">${'★'.repeat(review.rating)}${'☆'.repeat(5 - review.rating)}</div>
+
+                    <div class="review-comment">${review.comment}</div>
+
+                    <div class="review-actions">
+                        ${review.status !== 'approved' ? `
+                            <button class="btn btn-approve" data-action="approve" data-id="${review.id}">
+                                ✓ Approuver
+                            </button>
+                        ` : ''}
+                        ${review.status !== 'rejected' ? `
+                            <button class="btn btn-reject" data-action="reject" data-id="${review.id}">
+                                ✗ Rejeter
+                            </button>
+                        ` : ''}
+                        <button class="btn btn-delete" data-action="delete" data-id="${review.id}">
+                            🗑️ Supprimer
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Update review status
+        async function updateReviewStatus(id, status) {
+            if (!confirm(`Êtes-vous sûr de vouloir ${status === 'approved' ? 'approuver' : 'rejeter'} cet avis ?`)) {
+                return;
+            }
+
+            try {
+                const response = await fetch(`/api/reviews/admin/${id}`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ status })
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    alert(result.message);
+                    loadReviews();
+                } else {
+                    alert('Erreur: ' + result.message);
+                }
+            } catch (error) {
+                console.error('Erreur:', error);
+                alert('Erreur lors de la modification');
+            }
+        }
+
+        // Delete review
+        async function deleteReview(id) {
+            if (!confirm('Êtes-vous sûr de vouloir supprimer définitivement cet avis ?')) {
+                return;
+            }
+
+            try {
+                const response = await fetch(`/api/reviews/admin/${id}`, {
+                    method: 'DELETE'
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    alert(result.message);
+                    loadReviews();
+                } else {
+                    alert('Erreur: ' + result.message);
+                }
+            } catch (error) {
+                console.error('Erreur:', error);
+                alert('Erreur lors de la suppression');
+            }
+        }
+
+        // Reviews actions delegation (CSP-safe)
+        document.getElementById('reviewsGrid').addEventListener('click', async (e) => {
+            const btn = e.target.closest('button');
+            if (!btn) return;
+
+            const action = btn.getAttribute('data-action');
+            const id = btn.getAttribute('data-id');
+            if (!action || !id) return;
+
+            if (action === 'approve') {
+                await updateReviewStatus(id, 'approved');
+            } else if (action === 'reject') {
+                await updateReviewStatus(id, 'rejected');
+            } else if (action === 'delete') {
+                await deleteReview(id);
+            }
+        });
+
+        // Filter buttons for reviews
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentFilter = btn.dataset.filter;
+                loadReviews();
+            });
+        });
+
+        // Filter buttons for messages
+        document.querySelectorAll('.filter-btn-msg').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.filter-btn-msg').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentFilterMsg = btn.dataset.filter;
+                loadMessages();
+            });
+        });
+
+        // Load messages
+        async function loadMessages() {
+            try {
+                const params = currentFilterMsg !== 'all' ? `?status=${currentFilterMsg}` : '';
+                const response = await fetch(`/api/contact/admin${params}`);
+                const data = await response.json();
+
+                if (data.success) {
+                    allMessages = data.messages;
+                    updateStatsMessages(data.stats);
+                    displayMessages(data.messages);
+                }
+            } catch (error) {
+                console.error('Erreur chargement messages:', error);
+            }
+        }
+
+        // Update stats for messages
+        function updateStatsMessages(stats) {
+            const statsHTML = `
+                <div class="stat-card">
+                    <div class="stat-number">${stats.total}</div>
+                    <div class="stat-label">Total</div>
+                </div>
+                <div class="stat-card pending">
+                    <div class="stat-number">${stats.unread}</div>
+                    <div class="stat-label">Non lus</div>
+                </div>
+                <div class="stat-card approved">
+                    <div class="stat-number">${stats.in_progress}</div>
+                    <div class="stat-label">En cours</div>
+                </div>
+                <div class="stat-card rejected">
+                    <div class="stat-number">${stats.done}</div>
+                    <div class="stat-label">Traités</div>
+                </div>
+            `;
+            document.getElementById('stats').innerHTML = statsHTML;
+        }
+
+        // Display messages
+        function displayMessages(messages) {
+            const grid = document.getElementById('messagesGrid');
+
+            if (messages.length === 0) {
+                grid.innerHTML = `
+                    <div class="empty-state">
+                        <div style="font-size: 4rem;">📭</div>
+                        <h3>Aucun message</h3>
+                        <p>Aucun message de contact pour le moment</p>
+                    </div>
+                `;
+                return;
+            }
+
+            const serviceNames = {
+                wedding: 'Mariage',
+                portrait: 'Portrait',
+                event: 'Événement',
+                corporate: 'Corporate',
+                commercial: 'Commercial',
+                artistic: 'Artistique'
+            };
+
+            const statusLabels = {
+                unread: 'Non lu',
+                read: 'Lu',
+                in_progress: 'En cours',
+                done: 'Traité',
+                archived: 'Archivé'
+            };
+
+            grid.innerHTML = messages.map(msg => `
+                <div class="message-card ${msg.status}">
+                    <div class="review-header">
+                        <div class="review-info">
+                            <h3>${msg.name}</h3>
+                            <div class="review-meta">
+                                📧 ${msg.email}
+                                ${msg.phone ? `• 📱 ${msg.phone}` : ''}
+                            </div>
+                            ${msg.service ? `<span class="service-tag">${serviceNames[msg.service] || msg.service}</span>` : ''}
+                            ${msg.budget ? `<span class="service-tag">Budget: ${msg.budget}€</span>` : ''}
+                            <div class="review-meta" style="margin-top: 0.5rem; font-size: 0.75rem;">
+                                Reçu le ${new Date(msg.createdAt).toLocaleDateString('fr-FR', {
+                                    day: 'numeric',
+                                    month: 'long',
+                                    year: 'numeric',
+                                    hour: '2-digit',
+                                    minute: '2-digit'
+                                })}
+                            </div>
+                        </div>
+                        <div>
+                            <select class="status-select" onchange="updateMessageStatus('${msg.id}', this.value)">
+                                <option value="unread" ${msg.status === 'unread' ? 'selected' : ''}>📨 Non lu</option>
+                                <option value="read" ${msg.status === 'read' ? 'selected' : ''}>👁️ Lu</option>
+                                <option value="in_progress" ${msg.status === 'in_progress' ? 'selected' : ''}>⏳ En cours</option>
+                                <option value="done" ${msg.status === 'done' ? 'selected' : ''}>✅ Traité</option>
+                                <option value="archived" ${msg.status === 'archived' ? 'selected' : ''}>📦 Archivé</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="review-comment">${msg.message}</div>
+
+                    <div class="review-actions">
+                        <a href="mailto:${msg.email}" class="btn btn-approve">
+                            ✉️ Répondre par email
+                        </a>
+                        ${msg.phone ? `
+                            <a href="https://wa.me/${msg.phone.replace(/\s/g, '')}" target="_blank" class="btn btn-approve" style="background: #25D366;">
+                                💬 WhatsApp
+                            </a>
+                        ` : ''}
+                        <button class="btn btn-delete" onclick="deleteMessage('${msg.id}')">
+                            🗑️ Supprimer
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Update message status
+        async function updateMessageStatus(id, status) {
+            try {
+                const response = await fetch(`/api/contact/admin/${id}`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ status })
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    loadMessages();
+                } else {
+                    alert('Erreur: ' + result.message);
+                }
+            } catch (error) {
+                console.error('Erreur:', error);
+                alert('Erreur lors de la modification');
+            }
+        }
+
+        // Delete message
+        async function deleteMessage(id) {
+            if (!confirm('Êtes-vous sûr de vouloir supprimer ce message ?')) {
+                return;
+            }
+
+            try {
+                const response = await fetch(`/api/contact/admin/${id}`, {
+                    method: 'DELETE'
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    alert(result.message);
+                    loadMessages();
+                } else {
+                    alert('Erreur: ' + result.message);
+                }
+            } catch (error) {
+                console.error('Erreur:', error);
+                alert('Erreur lors de la suppression');
+            }
+        }
+
+        // Initial load
+        loadReviews();
+
+        // Calendar functions
+        let calendarData = null;
+
+        async function loadCalendar() {
+            try {
+                const response = await fetch('/api/calendar');
+                const data = await response.json();
+
+                if (data.success) {
+                    calendarData = data.calendar;
+                    updateStatsCalendar();
+                    renderCalendar();
+                    displayBlockedDates();
+                    displayBookings();
+                }
+            } catch (error) {
+                console.error('Erreur chargement calendrier:', error);
+            }
+        }
+
+        function updateStatsCalendar() {
+            const today = new Date().toISOString().split('T')[0];
+            const upcomingBookings = calendarData.bookings.filter(b => b.date >= today && b.status === 'confirmed').length;
+            const blockedCount = calendarData.blockedDates.length;
+
+            const statsHTML = `
+                <div class="stat-card">
+                    <div class="stat-number">${upcomingBookings + blockedCount}</div>
+                    <div class="stat-label">Dates occupées</div>
+                </div>
+                <div class="stat-card pending">
+                    <div class="stat-number">${upcomingBookings}</div>
+                    <div class="stat-label">Réservations à venir</div>
+                </div>
+                <div class="stat-card approved">
+                    <div class="stat-number">${blockedCount}</div>
+                    <div class="stat-label">Dates bloquées</div>
+                </div>
+                <div class="stat-card rejected">
+                    <div class="stat-number">${30 - (upcomingBookings + blockedCount)}</div>
+                    <div class="stat-label">Jours disponibles (ce mois)</div>
+                </div>
+            `;
+            document.getElementById('stats').innerHTML = statsHTML;
+        }
+
+        function renderCalendar() {
+            const calendarView = document.getElementById('calendarView');
+            const today = new Date();
+            const year = today.getFullYear();
+            const month = today.getMonth();
+
+            const firstDay = new Date(year, month, 1);
+            const lastDay = new Date(year, month + 1, 0);
+            const daysInMonth = lastDay.getDate();
+            const startDay = firstDay.getDay();
+
+            const monthNames = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 
+                               'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'];
+
+            let html = `
+                <div style="text-align: center; margin-bottom: 2rem;">
+                    <h2 style="color: #2c3e50;">${monthNames[month]} ${year}</h2>
+                </div>
+                <div style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 0.5rem;">
+                    <div style="text-align: center; font-weight: 600; color: #666; padding: 0.5rem;">Dim</div>
+                    <div style="text-align: center; font-weight: 600; color: #666; padding: 0.5rem;">Lun</div>
+                    <div style="text-align: center; font-weight: 600; color: #666; padding: 0.5rem;">Mar</div>
+                    <div style="text-align: center; font-weight: 600; color: #666; padding: 0.5rem;">Mer</div>
+                    <div style="text-align: center; font-weight: 600; color: #666; padding: 0.5rem;">Jeu</div>
+                    <div style="text-align: center; font-weight: 600; color: #666; padding: 0.5rem;">Ven</div>
+                    <div style="text-align: center; font-weight: 600; color: #666; padding: 0.5rem;">Sam</div>
+            `;
+
+            // Empty cells before first day
+            for (let i = 0; i < startDay; i++) {
+                html += '<div></div>';
+            }
+
+            // Days of month
+            for (let day = 1; day <= daysInMonth; day++) {
+                const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+                const isBlocked = calendarData.blockedDates.some(b => b.date === dateStr);
+                const booking = calendarData.bookings.find(b => b.date === dateStr && b.status === 'confirmed');
+                const isPast = dateStr < today.toISOString().split('T')[0];
+
+                let bgColor = 'white';
+                let textColor = '#333';
+                let icon = '';
+
+                if (isPast) {
+                    bgColor = '#f5f5f5';
+                    textColor = '#999';
+                } else if (isBlocked) {
+                    bgColor = '#ffebee';
+                    textColor = '#c62828';
+                    icon = '🚫';
+                } else if (booking) {
+                    bgColor = '#e8f5e9';
+                    textColor = '#2e7d32';
+                    icon = '📷';
+                }
+
+                html += `
+                    <div style="background: ${bgColor}; color: ${textColor}; padding: 1rem; border-radius: 8px; text-align: center; min-height: 60px; display: flex; flex-direction: column; justify-content: center; align-items: center; position: relative;">
+                        <div style="font-weight: 600;">${day}</div>
+                        ${icon ? `<div style="font-size: 1.25rem; margin-top: 0.25rem;">${icon}</div>` : ''}
+                        ${booking ? `<div style="font-size: 0.7rem; margin-top: 0.25rem;">${booking.clientName}</div>` : ''}
+                    </div>
+                `;
+            }
+
+            html += '</div>';
+            calendarView.innerHTML = html;
+        }
+
+        function displayBlockedDates() {
+            const list = document.getElementById('blockedDatesList');
+            const blocked = calendarData.blockedDates.sort((a, b) => new Date(a.date) - new Date(b.date));
+
+            if (blocked.length === 0) {
+                list.innerHTML = '<p style="color: #999; text-align: center; padding: 2rem;">Aucune date bloquée</p>';
+                return;
+            }
+
+            list.innerHTML = blocked.map(b => `
+                <div style="background: #f8f9fa; padding: 1rem; border-radius: 8px; margin-bottom: 0.5rem; display: flex; justify-content: space-between; align-items: center;">
+                    <div>
+                        <div style="font-weight: 600; color: #2c3e50;">${new Date(b.date).toLocaleDateString('fr-FR', {weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'})}</div>
+                        ${b.reason ? `<div style="font-size: 0.875rem; color: #666; margin-top: 0.25rem;">${b.reason}</div>` : ''}
+                    </div>
+                    <button onclick="unblockDate('${b.id}')" class="btn btn-delete" style="padding: 0.5rem 1rem; font-size: 0.875rem;">🗑️</button>
+                </div>
+            `).join('');
+        }
+
+        function displayBookings() {
+            const list = document.getElementById('bookingsList');
+            const bookings = calendarData.bookings
+                .filter(b => b.status === 'confirmed')
+                .sort((a, b) => new Date(a.date) - new Date(b.date));
+
+            if (bookings.length === 0) {
+                list.innerHTML = '<p style="color: #999; text-align: center; padding: 2rem;">Aucune réservation</p>';
+                return;
+            }
+
+            const serviceNames = {
+                wedding: 'Mariage',
+                portrait: 'Portrait',
+                event: 'Événement',
+                corporate: 'Corporate'
+            };
+
+            list.innerHTML = bookings.map(b => `
+                <div style="background: #f8f9fa; padding: 1rem; border-radius: 8px; margin-bottom: 0.5rem;">
+                    <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 0.5rem;">
+                        <div>
+                            <div style="font-weight: 600; color: #2c3e50;">${b.clientName}</div>
+                            <div style="font-size: 0.875rem; color: #666;">${new Date(b.date).toLocaleDateString('fr-FR', {weekday: 'long', day: 'numeric', month: 'long'})}</div>
+                            ${b.service ? `<span style="background: #e3f2fd; color: #1976d2; padding: 0.25rem 0.5rem; border-radius: 10px; font-size: 0.75rem; display: inline-block; margin-top: 0.5rem;">${serviceNames[b.service]}</span>` : ''}
+                            ${b.notes ? `<div style="font-size: 0.75rem; color: #999; margin-top: 0.5rem;">📝 ${b.notes}</div>` : ''}
+                        </div>
+                        <button class="btn btn-delete" data-action="delete-booking" data-id="${b.id}" style="padding: 0.5rem 1rem; font-size: 0.875rem;">🗑️</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        async function blockDate() {
+            const dateInput = document.getElementById('blockDate');
+            const reasonInput = document.getElementById('blockReason');
+
+            if (!dateInput.value) {
+                alert('Veuillez sélectionner une date');
+                return;
+            }
+
+            try {
+                const response = await fetch('/api/calendar/block', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        date: dateInput.value,
+                        reason: reasonInput.value
+                    })
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    alert('✅ Date bloquée avec succès !');
+                    dateInput.value = '';
+                    reasonInput.value = '';
+                    loadCalendar();
+                } else {
+                    alert('Erreur: ' + result.message);
+                }
+            } catch (error) {
+                console.error('Erreur:', error);
+                alert('Erreur lors du blocage de la date');
+            }
+        }
+
+        async function unblockDate(id) {
+            if (!confirm('Débloquer cette date ?')) return;
+
+            try {
+                const response = await fetch(`/api/calendar/block/${id}`, {
+                    method: 'DELETE'
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    loadCalendar();
+                } else {
+                    alert('Erreur: ' + result.message);
+                }
+            } catch (error) {
+                console.error('Erreur:', error);
+                alert('Erreur lors du déblocage');
+            }
+        }
+
+        // Delegate unblock/delete booking actions (CSP-safe)
+        document.getElementById('calendar-section').addEventListener('click', async (e) => {
+            const btn = e.target.closest('button[data-action]');
+            if (!btn) return;
+
+            const action = btn.getAttribute('data-action');
+            const id = btn.getAttribute('data-id');
+
+            if (action === 'delete-booking' && id) {
+                if (!confirm('Supprimer cette réservation ?')) return;
+                try {
+                    const response = await fetch(`/api/calendar/booking/${id}`, { method: 'DELETE' });
+                    const result = await response.json();
+                    if (result.success) {
+                        loadCalendar();
+                    } else {
+                        alert('Erreur: ' + result.message);
+                    }
+                } catch (error) {
+                    console.error('Erreur:', error);
+                    alert('Erreur lors de la suppression');
+                }
+            }
+        });
+
+        async function addBooking() {
+            const dateInput = document.getElementById('bookingDate');
+            const clientInput = document.getElementById('bookingClient');
+            const serviceInput = document.getElementById('bookingService');
+            const notesInput = document.getElementById('bookingNotes');
+
+            if (!dateInput.value || !clientInput.value) {
+                alert('Date et nom du client requis');
+                return;
+            }
+
+            try {
+                const response = await fetch('/api/calendar/booking', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        date: dateInput.value,
+                        clientName: clientInput.value,
+                        service: serviceInput.value,
+                        notes: notesInput.value
+                    })
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    alert('✅ Réservation ajoutée !');
+                    dateInput.value = '';
+                    clientInput.value = '';
+                    serviceInput.value = '';
+                    notesInput.value = '';
+                    loadCalendar();
+                } else {
+                    alert('Erreur: ' + result.message);
+                }
+            } catch (error) {
+                console.error('Erreur:', error);
+                alert('Erreur lors de l\'ajout de la réservation');
+            }
+        }
+
+        async function deleteBooking(id) {
+            if (!confirm('Supprimer cette réservation ?')) return;
+
+            try {
+                const response = await fetch(`/api/calendar/booking/${id}`, {
+                    method: 'DELETE'
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    loadCalendar();
+                } else {
+                    alert('Erreur: ' + result.message);
+                }
+            } catch (error) {
+                console.error('Erreur:', error);
+                alert('Erreur lors de la suppression');
+            }
+        }
+
+        // Portfolio functions
+        let portfolioData = [];
+        let currentCategoryFilter = 'all';
+
+        // Image preview
+        document.getElementById('imageFile').addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    document.getElementById('previewImg').src = e.target.result;
+                    document.getElementById('imagePreview').style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Upload form
+        document.getElementById('uploadForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const uploadBtn = document.getElementById('uploadBtn');
+            const formData = new FormData();
+            
+            formData.append('image', document.getElementById('imageFile').files[0]);
+            formData.append('title', document.getElementById('imageTitle').value);
+            formData.append('category', document.getElementById('imageCategory').value);
+            formData.append('description', document.getElementById('imageDescription').value);
+
+            uploadBtn.disabled = true;
+            uploadBtn.textContent = '⏳ Upload en cours...';
+
+            try {
+                const response = await fetch('/api/portfolio/upload', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    alert('✅ Photo ajoutée avec succès !');
+                    document.getElementById('uploadForm').reset();
+                    document.getElementById('imagePreview').style.display = 'none';
+                    loadPortfolioAdmin();
+                } else {
+                    alert('Erreur: ' + result.message);
+                }
+            } catch (error) {
+                console.error('Erreur:', error);
+                alert('Erreur lors de l\'upload');
+            } finally {
+                uploadBtn.disabled = false;
+                uploadBtn.textContent = '📤 Ajouter au portfolio';
+            }
+        });
+
+        // Filter buttons
+        document.querySelectorAll('.filter-btn-portfolio').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.filter-btn-portfolio').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentCategoryFilter = btn.dataset.category;
+                displayPortfolioItems();
+            });
+        });
+
+        async function loadPortfolioAdmin() {
+            try {
+                const response = await fetch('/api/portfolio/admin/stats');
+                const data = await response.json();
+
+                if (data.success) {
+                    portfolioData = data.portfolio;
+                    updateStatsPortfolio(data.stats);
+                    displayPortfolioItems();
+                }
+            } catch (error) {
+                console.error('Erreur chargement portfolio:', error);
+            }
+        }
+
+        function updateStatsPortfolio(stats) {
+            const statsHTML = `
+                <div class="stat-card">
+                    <div class="stat-number">${stats.total}</div>
+                    <div class="stat-label">Total photos</div>
+                </div>
+                <div class="stat-card pending">
+                    <div class="stat-number">${stats.wedding}</div>
+                    <div class="stat-label">Mariages</div>
+                </div>
+                <div class="stat-card approved">
+                    <div class="stat-number">${stats.portrait}</div>
+                    <div class="stat-label">Portraits</div>
+                </div>
+                <div class="stat-card rejected">
+                    <div class="stat-number">${stats.event + stats.corporate}</div>
+                    <div class="stat-label">Événements + Corporate</div>
+                </div>
+            `;
+            document.getElementById('stats').innerHTML = statsHTML;
+        }
+
+        function displayPortfolioItems() {
+            const grid = document.getElementById('portfolioGrid');
+            let items = portfolioData;
+
+            if (currentCategoryFilter !== 'all') {
+                items = items.filter(item => item.category === currentCategoryFilter);
+            }
+
+            if (items.length === 0) {
+                grid.innerHTML = '<div class="empty-state" style="grid-column: 1 / -1;"><div style="font-size: 4rem;">📸</div><h3>Aucune photo</h3><p>Ajoutez votre première photo au portfolio</p></div>';
+                return;
+            }
+
+            const serviceNames = {
+                wedding: 'Mariage',
+                portrait: 'Portrait',
+                event: 'Événement',
+                corporate: 'Corporate'
+            };
+
+            grid.innerHTML = items.map((item, index) => `
+                <div class="portfolio-item-admin" draggable="true" data-id="${item.id}">
+                    <img src="${item.image}" alt="${item.title}" onerror="this.src='https://via.placeholder.com/400x300/ff6b35/ffffff?text=Image+non+trouvée'">
+                    <div class="portfolio-item-content">
+                        <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 0.5rem;">
+                            <h4 style="color: #2c3e50; margin: 0;">${item.title}</h4>
+                            <span style="background: #ffe0d6; color: #ff6b35; padding: 0.25rem 0.75rem; border-radius: 15px; font-size: 0.75rem; font-weight: 600;">${serviceNames[item.category]}</span>
+                        </div>
+                        ${item.description ? `<p style="color: #666; font-size: 0.875rem; margin-bottom: 1rem;">${item.description}</p>` : ''}
+                        <div style="display: flex; gap: 0.5rem; margin-top: 1rem;">
+                            <button onclick="editPortfolioItem('${item.id}')" class="btn btn-approve" style="flex: 1; padding: 0.5rem; font-size: 0.875rem;">✏️ Modifier</button>
+                            <button onclick="deletePortfolioItem('${item.id}')" class="btn btn-delete" style="flex: 1; padding: 0.5rem; font-size: 0.875rem;">🗑️ Supprimer</button>
+                        </div>
+                        <div style="text-align: center; margin-top: 0.5rem; color: #999; font-size: 0.75rem;">Position: ${index + 1}</div>
+                    </div>
+                </div>
+            `).join('');
+
+            // Enable drag and drop for reordering
+            initDragAndDrop();
+        }
+
+        function initDragAndDrop() {
+            const items = document.querySelectorAll('.portfolio-item-admin');
+            let draggedItem = null;
+
+            items.forEach(item => {
+                item.addEventListener('dragstart', () => {
+                    draggedItem = item;
+                    item.style.opacity = '0.5';
+                });
+
+                item.addEventListener('dragend', () => {
+                    item.style.opacity = '1';
+                });
+
+                item.addEventListener('dragover', (e) => {
+                    e.preventDefault();
+                });
+
+                item.addEventListener('drop', async (e) => {
+                    e.preventDefault();
+                    if (draggedItem !== item) {
+                        const grid = document.getElementById('portfolioGrid');
+                        const allItems = [...grid.children];
+                        const draggedIndex = allItems.indexOf(draggedItem);
+                        const targetIndex = allItems.indexOf(item);
+
+                        if (draggedIndex < targetIndex) {
+                            item.after(draggedItem);
+                        } else {
+                            item.before(draggedItem);
+                        }
+
+                        // Save new order
+                        await savePortfolioOrder();
+                    }
+                });
+            });
+        }
+
+        async function savePortfolioOrder() {
+            const items = [...document.querySelectorAll('.portfolio-item-admin')];
+            const newOrder = items.map((item, index) => ({
+                id: item.dataset.id,
+                order: index
+            }));
+
+            try {
+                await fetch('/api/portfolio/reorder', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ items: newOrder })
+                });
+                console.log('✅ Ordre sauvegardé');
+            } catch (error) {
+                console.error('Erreur sauvegarde ordre:', error);
+            }
+        }
+
+        function editPortfolioItem(id) {
+            const item = portfolioData.find(p => p.id === id);
+            if (!item) return;
+
+            const newTitle = prompt('Nouveau titre:', item.title);
+            if (newTitle && newTitle !== item.title) {
+                updatePortfolioItem(id, { title: newTitle });
+            }
+        }
+
+        async function updatePortfolioItem(id, updates) {
+            try {
+                const response = await fetch(`/api/portfolio/${id}`, {
+                    method: 'PATCH',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(updates)
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    loadPortfolioAdmin();
+                } else {
+                    alert('Erreur: ' + result.message);
+                }
+            } catch (error) {
+                console.error('Erreur:', error);
+                alert('Erreur lors de la modification');
+            }
+        }
+
+        async function deletePortfolioItem(id) {
+            if (!confirm('Supprimer cette photo du portfolio ?')) return;
+
+            try {
+                const response = await fetch(`/api/portfolio/${id}`, {
+                    method: 'DELETE'
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    alert('✅ Photo supprimée !');
+                    loadPortfolioAdmin();
+                } else {
+                    alert('Erreur: ' + result.message);
+                }
+            } catch (error) {
+                console.error('Erreur:', error);
+                alert('Erreur lors de la suppression');
+            }
+        }
+
+        // Quotes functions
+        let quotesData = [];
+        let currentQuotesFilter = 'all';
+
+        // Quote form - calculate total
+        function calculateQuoteTotal() {
+            const rows = document.querySelectorAll('.quote-item-row');
+            let total = 0;
+            
+            rows.forEach(row => {
+                const qty = parseFloat(row.querySelector('.item-qty').value) || 0;
+                const price = parseFloat(row.querySelector('.item-price').value) || 0;
+                total += qty * price;
+            });
+            
+            document.getElementById('quoteTotal').textContent = total.toFixed(2).replace('.', ',') + ' €';
+            return total;
+        }
+
+        // Add quote item row
+        function addQuoteItem() {
+            const container = document.getElementById('quoteItems');
+            const newRow = document.createElement('div');
+            newRow.className = 'quote-item-row';
+            newRow.style.cssText = 'display: grid; grid-template-columns: 2fr 1fr 1fr 50px; gap: 0.5rem; margin-bottom: 0.5rem;';
+            newRow.innerHTML = `
+                <input type="text" placeholder="Description" class="item-desc" style="padding: 0.75rem; border: 2px solid #e0e0e0; border-radius: 8px;">
+                <input type="number" placeholder="Qté" value="1" min="1" class="item-qty" style="padding: 0.75rem; border: 2px solid #e0e0e0; border-radius: 8px;">
+                <input type="number" placeholder="Prix €" class="item-price" step="0.01" style="padding: 0.75rem; border: 2px solid #e0e0e0; border-radius: 8px;">
+                <button type="button" onclick="removeQuoteItem(this)" class="btn btn-delete" style="padding: 0.75rem;">×</button>
+            `;
+            container.appendChild(newRow);
+            
+            // Add event listeners for recalculation
+            newRow.querySelectorAll('input').forEach(input => {
+                input.addEventListener('input', calculateQuoteTotal);
+            });
+        }
+
+        function removeQuoteItem(btn) {
+            const rows = document.querySelectorAll('.quote-item-row');
+            if (rows.length > 1) {
+                btn.closest('.quote-item-row').remove();
+                calculateQuoteTotal();
+            } else {
+                alert('Le devis doit contenir au moins une ligne');
+            }
+        }
+
+        // Initialize price calculations
+        document.querySelectorAll('.item-qty, .item-price').forEach(input => {
+            input.addEventListener('input', calculateQuoteTotal);
+        });
+
+        // Quote form submission
+        document.getElementById('quoteForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const rows = document.querySelectorAll('.quote-item-row');
+            const items = [];
+            
+            rows.forEach(row => {
+                const desc = row.querySelector('.item-desc').value;
+                const qty = parseFloat(row.querySelector('.item-qty').value);
+                const price = parseFloat(row.querySelector('.item-price').value);
+                
+                if (desc && qty && price) {
+                    items.push({ description: desc, quantity: qty, price: price });
+                }
+            });
+
+            if (items.length === 0) {
+                alert('Veuillez ajouter au moins une prestation');
+                return;
+            }
+
+            const quoteData = {
+                clientName: document.getElementById('quoteClientName').value,
+                clientEmail: document.getElementById('quoteClientEmail').value,
+                clientPhone: document.getElementById('quoteClientPhone').value,
+                service: document.getElementById('quoteService').value,
+                date: document.getElementById('quoteDate').value,
+                items,
+                notes: document.getElementById('quoteNotes').value
+            };
+
+            const createBtn = document.getElementById('createQuoteBtn');
+            createBtn.disabled = true;
+            createBtn.textContent = '⏳ Création...';
+
+            try {
+                const response = await fetch('/api/quotes', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(quoteData)
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    alert('✅ Devis créé ! N° ' + result.quote.quoteNumber);
+                    document.getElementById('quoteForm').reset();
+                    document.getElementById('quoteTotal').textContent = '0,00 €';
+                    loadQuotes();
+                } else {
+                    alert('Erreur: ' + result.message);
+                }
+            } catch (error) {
+                console.error('Erreur:', error);
+                alert('Erreur lors de la création du devis');
+            } finally {
+                createBtn.disabled = false;
+                createBtn.textContent = '💾 Créer le devis';
+            }
+        });
+
+        // Filter buttons for quotes
+        document.querySelectorAll('.filter-btn-quotes').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.filter-btn-quotes').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentQuotesFilter = btn.dataset.status;
+                loadQuotes();
+            });
+        });
+
+        async function loadQuotes() {
+            try {
+                const params = currentQuotesFilter !== 'all' ? `?status=${currentQuotesFilter}` : '';
+                const response = await fetch(`/api/quotes/admin${params}`);
+                const data = await response.json();
+
+                if (data.success) {
+                    quotesData = data.quotes;
+                    updateStatsQuotes(data.stats);
+                    displayQuotes(data.quotes);
+                }
+            } catch (error) {
+                console.error('Erreur chargement devis:', error);
+            }
+        }
+
+        function updateStatsQuotes(stats) {
+            const statsHTML = `
+                <div class="stat-card">
+                    <div class="stat-number">${stats.total}</div>
+                    <div class="stat-label">Total devis</div>
+                </div>
+                <div class="stat-card pending">
+                    <div class="stat-number">${stats.sent}</div>
+                    <div class="stat-label">En attente</div>
+                </div>
+                <div class="stat-card approved">
+                    <div class="stat-number">${stats.accepted}</div>
+                    <div class="stat-label">Acceptés</div>
+                </div>
+                <div class="stat-card rejected">
+                    <div class="stat-number">${stats.totalAmount.toLocaleString('fr-FR')} €</div>
+                    <div class="stat-label">CA réalisé</div>
+                </div>
+            `;
+            document.getElementById('stats').innerHTML = statsHTML;
+        }
+
+        function displayQuotes(quotes) {
+            const grid = document.getElementById('quotesGrid');
+
+            if (quotes.length === 0) {
+                grid.innerHTML = '<div class="empty-state"><div style="font-size: 4rem;">💰</div><h3>Aucun devis</h3><p>Créez votre premier devis</p></div>';
+                return;
+            }
+
+            const serviceNames = {
+                wedding: 'Mariage',
+                portrait: 'Portrait',
+                event: 'Événement',
+                corporate: 'Corporate'
+            };
+
+            const statusLabels = {
+                draft: 'Brouillon',
+                sent: 'Envoyé',
+                accepted: 'Accepté ✅',
+                rejected: 'Refusé',
+                expired: 'Expiré'
+            };
+
+            const paymentLabels = {
+                pending: 'En attente',
+                partial: 'Acompte reçu',
+                paid: 'Payé ✅'
+            };
+
+            grid.innerHTML = quotes.map(quote => `
+                <div class="quote-card ${quote.status}">
+                    <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
+                        <div>
+                            <h3 style="color: #2c3e50; margin-bottom: 0.5rem;">${quote.quoteNumber}</h3>
+                            <div style="color: #666; font-size: 0.875rem;">
+                                ${quote.clientName} • ${quote.clientEmail}<br>
+                                ${serviceNames[quote.service]} ${quote.date ? `• ${new Date(quote.date).toLocaleDateString('fr-FR')}` : ''}
+                            </div>
+                        </div>
+                        <div style="text-align: right;">
+                            <div style="font-size: 1.5rem; font-weight: 800; color: #ff6b35;">${quote.totalAmount.toFixed(2)} €</div>
+                            <div style="font-size: 0.875rem; color: #666;">${statusLabels[quote.status]}</div>
+                            ${quote.paymentStatus !== 'pending' ? `<div style="font-size: 0.875rem; color: #28a745; margin-top: 0.25rem;">${paymentLabels[quote.paymentStatus]}</div>` : ''}
+                        </div>
+                    </div>
+
+                    ${quote.paidAmount > 0 ? `
+                        <div style="background: #e8f5e9; padding: 0.75rem; border-radius: 8px; margin-bottom: 1rem;">
+                            💰 Payé: ${quote.paidAmount.toFixed(2)} € / ${quote.totalAmount.toFixed(2)} € 
+                            <span style="color: #28a745; font-weight: 600;">(${((quote.paidAmount / quote.totalAmount) * 100).toFixed(0)}%)</span>
+                        </div>
+                    ` : ''}
+
+                    <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 1rem;">
+                        ${quote.status === 'draft' ? `
+                            <button onclick="updateQuoteStatus('${quote.id}', 'sent')" class="btn btn-approve" style="flex: 1;">📤 Marquer comme envoyé</button>
+                        ` : ''}
+                        ${quote.status === 'sent' ? `
+                            <button onclick="updateQuoteStatus('${quote.id}', 'accepted')" class="btn btn-approve" style="flex: 1;">✅ Accepté</button>
+                            <button onclick="updateQuoteStatus('${quote.id}', 'rejected')" class="btn btn-reject" style="flex: 1;">❌ Refusé</button>
+                        ` : ''}
+                        ${quote.paymentStatus !== 'paid' ? `
+                            <button onclick="addPayment('${quote.id}')" class="btn btn-approve" style="background: #28a745;">💳 Ajouter paiement</button>
+                        ` : ''}
+                        <a href="/api/quotes/${quote.id}/preview" target="_blank" class="btn btn-approve" style="background: #6c757d; text-decoration: none; display: inline-block; text-align: center;">👁️ Aperçu</a>
+                        <button onclick="deleteQuote('${quote.id}')" class="btn btn-delete">🗑️ Supprimer</button>
+                    </div>
+
+                    <div style="margin-top: 1rem; font-size: 0.75rem; color: #999;">
+                        Créé le ${new Date(quote.createdAt).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        async function updateQuoteStatus(id, status) {
+            try {
+                const response = await fetch(`/api/quotes/${id}`, {
+                    method: 'PATCH',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ status })
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    loadQuotes();
+                } else {
+                    alert('Erreur: ' + result.message);
+                }
+            } catch (error) {
+                console.error('Erreur:', error);
+                alert('Erreur lors de la modification');
+            }
+        }
+
+        async function addPayment(quoteId) {
+            const amount = prompt('Montant du paiement (€):');
+            if (!amount || isNaN(amount) || parseFloat(amount) <= 0) {
+                return;
+            }
+
+            const method = prompt('Méthode de paiement:', 'virement') || 'virement';
+
+            try {
+                const response = await fetch(`/api/quotes/${quoteId}/payment`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ 
+                        amount: parseFloat(amount),
+                        method: method
+                    })
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    alert('✅ Paiement enregistré !');
+                    loadQuotes();
+                } else {
+                    alert('Erreur: ' + result.message);
+                }
+            } catch (error) {
+                console.error('Erreur:', error);
+                alert('Erreur lors de l\'enregistrement du paiement');
+            }
+        }
+
+        async function deleteQuote(id) {
+            if (!confirm('Supprimer ce devis ?')) return;
+
+            try {
+                const response = await fetch(`/api/quotes/${id}`, {
+                    method: 'DELETE'
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    loadQuotes();
+                } else {
+                    alert('Erreur: ' + result.message);
+                }
+            } catch (error) {
+                console.error('Erreur:', error);
+                alert('Erreur lors de la suppression');
+            }
+        }
+
+        // Templates functions
+        let templatesData = {};
+
+        async function loadTemplates() {
+            try {
+                const response = await fetch('/api/templates');
+                const data = await response.json();
+
+                if (data.success) {
+                    templatesData = data.templates;
+                    updateStatsTemplates();
+                    displayTemplates();
+                }
+            } catch (error) {
+                console.error('Erreur chargement templates:', error);
+            }
+        }
+
+        function updateStatsTemplates() {
+            const count = Object.keys(templatesData).length;
+            const statsHTML = `
+                <div class="stat-card">
+                    <div class="stat-number">${count}</div>
+                    <div class="stat-label">Templates disponibles</div>
+                </div>
+                <div class="stat-card pending">
+                    <div class="stat-number">5</div>
+                    <div class="stat-label">Variables dynamiques</div>
+                </div>
+                <div class="stat-card approved">
+                    <div class="stat-number">✅</div>
+                    <div class="stat-label">Emails automatisés</div>
+                </div>
+                <div class="stat-card rejected">
+                    <div class="stat-number">∞</div>
+                    <div class="stat-label">Personnalisable</div>
+                </div>
+            `;
+            document.getElementById('stats').innerHTML = statsHTML;
+        }
+
+        function displayTemplates() {
+            const list = document.getElementById('templatesList');
+            
+            const templateEntries = Object.entries(templatesData);
+
+            list.innerHTML = templateEntries.map(([key, template]) => `
+                <div style="background: #f8f9fa; padding: 1.5rem; border-radius: 10px; border-left: 4px solid #ff6b35;">
+                    <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
+                        <div>
+                            <h4 style="color: #2c3e50; margin-bottom: 0.5rem;">${template.name}</h4>
+                            <div style="font-size: 0.875rem; color: #666;">
+                                Variables disponibles: ${template.variables.map(v => `<code style="background: white; padding: 0.25rem 0.5rem; border-radius: 4px;">{{${v}}}</code>`).join(' ')}
+                            </div>
+                        </div>
+                        <button class="btn btn-approve" data-action="tpl-edit" data-id="${key}" style="padding: 0.5rem 1rem; font-size: 0.875rem;">✏️ Éditer</button>
+                    </div>
+                    
+                    <div style="background: white; padding: 1rem; border-radius: 8px; margin-top: 1rem;">
+                        <div style="font-weight: 600; color: #666; font-size: 0.875rem; margin-bottom: 0.5rem;">Objet :</div>
+                        <div style="color: #2c3e50;">${template.subject}</div>
+                    </div>
+                    
+                    <div style="background: white; padding: 1rem; border-radius: 8px; margin-top: 0.5rem;">
+                        <div style="font-weight: 600; color: #666; font-size: 0.875rem; margin-bottom: 0.5rem;">Corps du message :</div>
+                        <div style="color: #666; white-space: pre-line; font-size: 0.875rem; max-height: 150px; overflow-y: auto;">${template.body}</div>
+                    </div>
+
+                    <div style="display: flex; gap: 0.5rem; margin-top: 1rem;">
+                        <button class="btn btn-reject" data-action="tpl-reset" data-id="${key}" style="flex: 1; font-size: 0.875rem;">🔄 Réinitialiser</button>
+                        <button class="btn btn-approve" data-action="tpl-test" data-id="${key}" style="flex: 1; background: #6c757d; font-size: 0.875rem;">📤 Envoyer un test</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function editTemplate(templateId) {
+            const template = templatesData[templateId];
+            if (!template) return;
+
+            const newSubject = prompt('Objet de l\'email:', template.subject);
+            if (newSubject === null) return;
+
+            const newBody = prompt('Corps du message:\n(Utilisez {{variable}} pour les données dynamiques)', template.body);
+            if (newBody === null) return;
+
+            updateTemplate(templateId, { subject: newSubject, body: newBody });
+        }
+
+        async function updateTemplate(templateId, updates) {
+            try {
+                const response = await fetch(`/api/templates/${templateId}`, {
+                    method: 'PATCH',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(updates)
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    alert('✅ Template mis à jour !');
+                    loadTemplates();
+                } else {
+                    alert('Erreur: ' + result.message);
+                }
+            } catch (error) {
+                console.error('Erreur:', error);
+                alert('Erreur lors de la mise à jour');
+            }
+        }
+
+        async function resetTemplate(templateId) {
+            if (!confirm('Réinitialiser ce template aux valeurs par défaut ?')) return;
+
+            try {
+                const response = await fetch(`/api/templates/${templateId}/reset`, {
+                    method: 'POST'
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    alert('✅ Template réinitialisé !');
+                    loadTemplates();
+                } else {
+                    alert('Erreur: ' + result.message);
+                }
+            } catch (error) {
+                console.error('Erreur:', error);
+                alert('Erreur lors de la réinitialisation');
+            }
+        }
+
+        async function testTemplate(templateId) {
+            const testEmail = prompt('Email de destination pour le test:', 'jeannoseloi@gmail.com');
+            if (!testEmail) return;
+
+            try {
+                const response = await fetch(`/api/templates/${templateId}/test`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        testEmail,
+                        variables: {
+                            clientName: 'Jean Dupont',
+                            service: 'Mariage',
+                            date: '15 juin 2025',
+                            quoteNumber: 'DEVIS-202510-001',
+                            totalAmount: '1500',
+                            depositAmount: '450',
+                            remainingAmount: '1050',
+                            siteUrl: 'http://localhost:3002'
+                        }
+                    })
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    alert('📧 Email de test envoyé (simulation) !\n\nAperçu:\n' + result.preview.subject + '\n\n' + result.preview.body.substring(0, 200) + '...');
+                } else {
+                    alert('Erreur: ' + result.message);
+                }
+            } catch (error) {
+                console.error('Erreur:', error);
+                alert('Erreur lors de l\'envoi du test');
+            }
+        }
+
+        // Delegation for templates buttons (CSP-safe)
+        document.getElementById('templates-section').addEventListener('click', async (e) => {
+            const btn = e.target.closest('button[data-action]');
+            if (!btn) return;
+
+            const action = btn.getAttribute('data-action');
+            const id = btn.getAttribute('data-id');
+            if (!action || !id) return;
+
+            if (action === 'tpl-edit') {
+                editTemplate(id);
+            } else if (action === 'tpl-reset') {
+                await resetTemplate(id);
+            } else if (action === 'tpl-test') {
+                await testTemplate(id);
+            }
+        });
+
+        // Load Dashboard Statistics
+        async function loadDashboardStats() {
+            try {
+                const response = await fetch('/api/stats/dashboard');
+                const data = await response.json();
+
+                if (data.success) {
+                    dashboardStats = data.stats;
+                    displayDashboardStats(data.stats);
+                }
+            } catch (error) {
+                console.error('Erreur chargement stats:', error);
+            }
+        }
+
+        function displayDashboardStats(stats) {
+            // Overview stats
+            document.getElementById('stat-messages').textContent = stats.overview.totalMessages;
+            document.getElementById('stat-messages-month').textContent = `${stats.overview.messagesThisMonth} ce mois`;
+            
+            document.getElementById('stat-rating').textContent = stats.overview.avgRating;
+            document.getElementById('stat-reviews-count').textContent = `${stats.overview.approvedReviews} avis`;
+            
+            document.getElementById('stat-revenue').textContent = `${stats.overview.totalRevenue.toLocaleString('fr-FR')} €`;
+            document.getElementById('stat-revenue-year').textContent = `${stats.overview.revenueThisYear.toLocaleString('fr-FR')} € cette année`;
+            
+            document.getElementById('stat-bookings').textContent = stats.overview.upcomingBookings;
+
+            // Service performance
+            displayServicePerformance(stats.serviceStats);
+
+            // Monthly chart
+            displayMonthlyChart(stats.monthlyData);
+
+            // Recent activity
+            displayRecentActivity(stats.recentActivity);
+        }
+
+        function displayServicePerformance(serviceStats) {
+            const container = document.getElementById('servicePerformance');
+            const serviceNames = {
+                wedding: '💍 Mariage',
+                portrait: '👤 Portrait',
+                event: '🎉 Événement',
+                corporate: '🏢 Corporate'
+            };
+
+            let html = '';
+            for (const [key, stats] of Object.entries(serviceStats)) {
+                const serviceName = serviceNames[key];
+                const conversionColor = stats.conversionRate > 50 ? '#28a745' : stats.conversionRate > 30 ? '#ffc107' : '#dc3545';
+
+                html += `
+                    <div style="border: 1px solid #e0e0e0; border-radius: 10px; padding: 1.5rem; display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 1rem; align-items: center;">
+                        <div>
+                            <div style="font-weight: 600; color: #333; font-size: 1.1rem;">${serviceName}</div>
+                            <div style="color: #666; font-size: 0.875rem; margin-top: 0.25rem;">${stats.total} demandes</div>
+                        </div>
+                        <div style="text-align: center;">
+                            <div style="font-size: 0.75rem; color: #666; margin-bottom: 0.25rem;">TAUX CONVERSION</div>
+                            <div style="font-size: 1.5rem; font-weight: 800; color: ${conversionColor};">${stats.conversionRate}%</div>
+                        </div>
+                        <div style="text-align: center;">
+                            <div style="font-size: 0.75rem; color: #666; margin-bottom: 0.25rem;">ACCEPTÉS</div>
+                            <div style="font-size: 1.5rem; font-weight: 800; color: #28a745;">${stats.accepted}</div>
+                        </div>
+                        <div style="text-align: center;">
+                            <div style="font-size: 0.75rem; color: #666; margin-bottom: 0.25rem;">CA GÉNÉRÉ</div>
+                            <div style="font-size: 1.5rem; font-weight: 800; color: #667eea;">${stats.revenue.toLocaleString('fr-FR')} €</div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            container.innerHTML = html;
+        }
+
+        function displayMonthlyChart(monthlyData) {
+            const container = document.getElementById('monthlyChart');
+            const maxRevenue = Math.max(...Object.values(monthlyData).map(m => m.revenue));
+
+            let html = '<div style="display: flex; gap: 1rem; align-items: flex-end; min-height: 300px;">';
+
+            for (const [month, data] of Object.entries(monthlyData)) {
+                const height = maxRevenue > 0 ? (data.revenue / maxRevenue * 250) : 20;
+
+                html += `
+                    <div style="flex: 1; text-align: center;">
+                        <div style="background: linear-gradient(180deg, #ff6b35, #ff8c5a); height: ${height}px; border-radius: 10px 10px 0 0; min-height: 20px; position: relative; cursor: pointer;" 
+                             title="${data.revenue.toLocaleString('fr-FR')} € | ${data.quotes} devis | ${data.messages} messages">
+                            <div style="position: absolute; top: -25px; left: 50%; transform: translateX(-50%); font-weight: 600; color: #ff6b35; white-space: nowrap;">
+                                ${data.revenue.toLocaleString('fr-FR')} €
+                            </div>
+                        </div>
+                        <div style="margin-top: 0.5rem; font-size: 0.75rem; color: #666; font-weight: 500;">${month.split(' ')[0]}</div>
+                        <div style="font-size: 0.7rem; color: #999;">${data.quotes} devis</div>
+                    </div>
+                `;
+            }
+
+            html += '</div>';
+            container.innerHTML = html;
+        }
+
+        function displayRecentActivity(activities) {
+            const container = document.getElementById('recentActivity');
+
+            if (activities.length === 0) {
+                container.innerHTML = '<p style="color: #999; text-align: center; padding: 2rem;">Aucune activité récente</p>';
+                return;
+            }
+
+            let html = '<div style="display: flex; flex-direction: column; gap: 0.75rem;">';
+
+            activities.forEach(activity => {
+                const date = new Date(activity.date).toLocaleString('fr-FR', {
+                    day: 'numeric',
+                    month: 'short',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+
+                html += `
+                    <div style="display: flex; align-items: center; gap: 1rem; padding: 0.75rem; border-radius: 8px; background: #f8f9fa;">
+                        <div style="font-size: 1.5rem;">${activity.icon}</div>
+                        <div style="flex: 1;">
+                            <div style="font-weight: 500; color: #333;">${activity.text}</div>
+                            <div style="font-size: 0.75rem; color: #999; margin-top: 0.25rem;">${date}</div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            html += '</div>';
+            container.innerHTML = html;
+        }
+
+        // Refresh every 30 seconds
+        setInterval(() => {
+            if (currentTab === 'stats') {
+                loadDashboardStats();
+            } else if (currentTab === 'reviews') {
+                loadReviews();
+            } else if (currentTab === 'messages') {
+                loadMessages();
+            } else if (currentTab === 'calendar') {
+                loadCalendar();
+            } else if (currentTab === 'portfolio') {
+                loadPortfolioAdmin();
+            } else if (currentTab === 'quotes') {
+                loadQuotes();
+            }
+            // Templates don't need auto-refresh
+        }, 30000);
+
+        // Initial load
+        loadDashboardStats();
+    </script>
+</body>
+</html>
+

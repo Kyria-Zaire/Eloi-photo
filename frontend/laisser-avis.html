@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laisser un Avis - click.storm51</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', Arial, sans-serif;
+            background: #0a0a0a;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 600px;
+            width: 100%;
+            padding: 3rem;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .header h1 {
+            color: #2c3e50;
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            color: #666;
+            font-size: 1rem;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #ff6b35, #ff8c5a);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #2c3e50;
+            font-weight: 600;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 0.875rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-family: 'Inter', Arial, sans-serif;
+            transition: border-color 0.3s ease;
+        }
+
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: #ff6b35;
+        }
+
+        textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        .rating-group {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .stars {
+            display: flex;
+            gap: 0.25rem;
+            font-size: 2rem;
+        }
+
+        .star {
+            cursor: pointer;
+            color: #ddd;
+            transition: color 0.2s ease;
+        }
+
+        .star.active,
+        .star:hover {
+            color: #ffc107;
+        }
+
+        .submit-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #ff6b35, #ff8c5a);
+            color: white;
+            border: none;
+            padding: 1rem;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(255, 107, 53, 0.3);
+        }
+
+        .submit-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 1.5rem;
+            color: #ff6b35;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        .notification {
+            padding: 1rem;
+            border-radius: 10px;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+        }
+
+        .notification.success {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .notification.error {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .service-badge {
+            display: inline-block;
+            background: #f0f0f0;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            color: #666;
+            margin-top: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">click.storm51</div>
+            <h1>✨ Partagez votre expérience</h1>
+            <p>Votre avis nous aide à améliorer nos services</p>
+        </div>
+
+        <div id="notification" class="notification hidden"></div>
+
+        <form id="reviewForm">
+            <div class="form-group">
+                <label for="name">Votre nom *</label>
+                <input type="text" id="name" name="name" required placeholder="Ex: Marie Dupont">
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email * <small>(non publié, pour validation uniquement)</small></label>
+                <input type="email" id="email" name="email" required placeholder="votre@email.com">
+            </div>
+
+            <div class="form-group">
+                <label for="service">Type de prestation *</label>
+                <select id="service" name="service" required style="width: 100%; padding: 0.875rem; border: 2px solid #e0e0e0; border-radius: 10px; font-size: 1rem;">
+                    <option value="">Sélectionner...</option>
+                    <option value="wedding">Mariage</option>
+                    <option value="portrait">Portrait</option>
+                    <option value="event">Événement</option>
+                    <option value="corporate">Corporate</option>
+                    <option value="commercial">Commercial</option>
+                    <option value="artistic">Artistique</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Note globale *</label>
+                <div class="rating-group">
+                    <div class="stars" id="stars">
+                        <span class="star" data-rating="1">★</span>
+                        <span class="star" data-rating="2">★</span>
+                        <span class="star" data-rating="3">★</span>
+                        <span class="star" data-rating="4">★</span>
+                        <span class="star" data-rating="5">★</span>
+                    </div>
+                    <span id="ratingText" style="color: #666;">Pas encore noté</span>
+                </div>
+                <input type="hidden" id="rating" name="rating" required>
+            </div>
+
+            <div class="form-group">
+                <label for="comment">Votre témoignage * <small>(minimum 20 caractères)</small></label>
+                <textarea id="comment" name="comment" required placeholder="Décrivez votre expérience avec Eloi..."></textarea>
+                <small id="charCount" style="color: #999;">0 / 20 caractères minimum</small>
+            </div>
+
+            <div class="form-group">
+                <label for="date">Date approximative de la prestation</label>
+                <input type="month" id="date" name="date" placeholder="Ex: Juin 2024">
+            </div>
+
+            <button type="submit" class="submit-btn" id="submitBtn">
+                📤 Envoyer mon avis
+            </button>
+        </form>
+
+        <a href="/" class="back-link">← Retour au site</a>
+    </div>
+
+    <script>
+        let selectedRating = 0;
+        const stars = document.querySelectorAll('.star');
+        const ratingInput = document.getElementById('rating');
+        const ratingText = document.getElementById('ratingText');
+        const commentField = document.getElementById('comment');
+        const charCount = document.getElementById('charCount');
+
+        // Gestion des étoiles
+        stars.forEach(star => {
+            star.addEventListener('click', () => {
+                selectedRating = parseInt(star.dataset.rating);
+                ratingInput.value = selectedRating;
+                updateStars();
+                updateRatingText();
+            });
+
+            star.addEventListener('mouseenter', () => {
+                const hoverRating = parseInt(star.dataset.rating);
+                stars.forEach((s, idx) => {
+                    s.style.color = idx < hoverRating ? '#ffc107' : '#ddd';
+                });
+            });
+        });
+
+        document.getElementById('stars').addEventListener('mouseleave', updateStars);
+
+        function updateStars() {
+            stars.forEach((star, idx) => {
+                star.classList.toggle('active', idx < selectedRating);
+            });
+        }
+
+        function updateRatingText() {
+            const texts = ['', 'Très décevant', 'Décevant', 'Correct', 'Très bien', 'Excellent !'];
+            ratingText.textContent = texts[selectedRating] || 'Pas encore noté';
+            ratingText.style.color = selectedRating > 0 ? '#ffc107' : '#666';
+        }
+
+        // Compteur de caractères
+        commentField.addEventListener('input', () => {
+            const length = commentField.value.length;
+            charCount.textContent = `${length} / 20 caractères minimum`;
+            charCount.style.color = length >= 20 ? '#28a745' : '#999';
+        });
+
+        // Soumission du formulaire
+        document.getElementById('reviewForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const submitBtn = document.getElementById('submitBtn');
+            const notification = document.getElementById('notification');
+
+            // Validation
+            if (selectedRating === 0) {
+                showNotification('Veuillez sélectionner une note', 'error');
+                return;
+            }
+
+            if (commentField.value.length < 20) {
+                showNotification('Le témoignage doit contenir au moins 20 caractères', 'error');
+                return;
+            }
+
+            // Préparer les données
+            const formData = {
+                name: document.getElementById('name').value,
+                email: document.getElementById('email').value,
+                service: document.getElementById('service').value,
+                rating: selectedRating,
+                comment: commentField.value,
+                date: document.getElementById('date').value || null
+            };
+
+            // Désactiver le bouton
+            submitBtn.disabled = true;
+            submitBtn.textContent = '⏳ Envoi en cours...';
+
+            try {
+                const response = await fetch('/api/reviews', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                const result = await response.json();
+
+                if (response.ok && result.success) {
+                    showNotification('✅ Merci ! Votre avis a été envoyé et sera publié après validation.', 'success');
+                    document.getElementById('reviewForm').reset();
+                    selectedRating = 0;
+                    updateStars();
+                    updateRatingText();
+                    
+                    setTimeout(() => {
+                        window.location.href = '/';
+                    }, 3000);
+                } else {
+                    showNotification(result.message || '❌ Erreur lors de l\'envoi', 'error');
+                }
+            } catch (error) {
+                console.error('Erreur:', error);
+                showNotification('❌ Erreur de connexion. Veuillez réessayer.', 'error');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = '📤 Envoyer mon avis';
+            }
+        });
+
+        function showNotification(message, type) {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.className = `notification ${type}`;
+            notification.classList.remove('hidden');
+
+            setTimeout(() => {
+                notification.classList.add('hidden');
+            }, 5000);
+        }
+    </script>
+</body>
+</html>
+

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test des Cookies - click.storm51</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 2rem;
+            background: #1a1a1a;
+            color: white;
+        }
+        button {
+            background: #ff6b35;
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            margin: 0.5rem;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+        button:hover {
+            background: #e55a2b;
+        }
+        .status {
+            background: #333;
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+    <h1>🍪 Test des Cookies RGPD</h1>
+
+    <div class="status" id="status">
+        Status: <span id="cookieStatus">Vérification...</span>
+    </div>
+
+    <button onclick="clearCookies()">🗑️ Supprimer les cookies</button>
+    <button onclick="acceptCookies()">✅ Accepter les cookies</button>
+    <button onclick="checkStatus()">🔍 Vérifier le status</button>
+    <button onclick="window.location.href='/'">🏠 Retour au site</button>
+
+    <h2>Instructions :</h2>
+    <ol>
+        <li>Cliquez sur "Supprimer les cookies" pour réinitialiser</li>
+        <li>Retournez au site principal</li>
+        <li>La bannière devrait apparaître après 2 secondes</li>
+        <li>Cliquez sur "Accepter" pour la faire disparaître</li>
+    </ol>
+
+    <script>
+        function clearCookies() {
+            localStorage.removeItem('cookiesAccepted');
+            updateStatus();
+            alert('Cookies supprimés ! Retournez au site principal.');
+        }
+
+        function acceptCookies() {
+            localStorage.setItem('cookiesAccepted', 'true');
+            updateStatus();
+            alert('Cookies acceptés !');
+        }
+
+        function checkStatus() {
+            updateStatus();
+        }
+
+        function updateStatus() {
+            const accepted = localStorage.getItem('cookiesAccepted');
+            const statusElement = document.getElementById('cookieStatus');
+
+            if (accepted === 'true') {
+                statusElement.textContent = '✅ Cookies acceptés';
+                statusElement.style.color = '#4ade80';
+            } else {
+                statusElement.textContent = '❌ Cookies non acceptés';
+                statusElement.style.color = '#f87171';
+            }
+        }
+
+        // Check status on load
+        updateStatus();
+    </script>
+</body>
+</html>

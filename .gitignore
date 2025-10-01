@@ -1,0 +1,34 @@
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Env & secrets
+.env
+.env.local
+.env.*.local
+
+# OS / Editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# Build / cache
+.cache/
+dist/
+build/
+
+# Uploads (générés au runtime)
+frontend/assets/uploads/
+
+# Données runtime JSON (laisser les fichiers par défaut)
+backend/data/*.json
+!backend/data/default-templates.json
+
+# Logs
+logs/
+*.log
+backend/*.log
+

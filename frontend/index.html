@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- Primary Meta Tags -->
+<title>click.storm51 - Eloi Photographe Professionnel Marne | Mariage, Portrait, Événements</title>
+<meta name="title" content="click.storm51 - Eloi Photographe Professionnel Marne | Mariage, Portrait, Événements">
+<meta name="description" content="Photographe professionnel basé dans la Marne (51). Spécialisé en mariage, portrait et événements. Capturer vos émotions avec authenticité. Devis gratuit.">
+<meta name="keywords" content="photographe marne, photographe 51, mariage reims, portrait épernay, événement châlons, photographe champagne, wedding photographer france">
+<meta name="author" content="Eloi - click.storm51">
+<meta name="robots" content="index, follow">
+<meta name="language" content="FR">
+
+<!-- Open Graph / Facebook -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://clickstorm51.fr/">
+<meta property="og:title" content="click.storm51 - Eloi Photographe Professionnel Marne">
+<meta property="og:description" content="Photographe professionnel spécialisé en mariage, portrait et événements dans la Marne et région Grand Est.">
+<meta property="og:image" content="https://clickstorm51.fr/assets/images/og-image.jpg">
+<meta property="og:locale" content="fr_FR">
+
+<!-- Twitter -->
+<meta property="twitter:card" content="summary_large_image">
+<meta property="twitter:url" content="https://clickstorm51.fr/">
+<meta property="twitter:title" content="click.storm51 - Eloi Photographe Professionnel">
+<meta property="twitter:description" content="Photographe professionnel basé dans la Marne. Spécialisé en mariage, portrait et événements.">
+<meta property="twitter:image" content="https://clickstorm51.fr/assets/images/og-image.jpg">
+
+<!-- Canonical URL -->
+<link rel="canonical" href="https://clickstorm51.fr/">
+
+<!-- Preconnect to external domains -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://images.unsplash.com">
+
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+<!-- Favicon -->
+<link rel="icon" type="image/x-icon" href="/assets/images/favicon.ico">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/images/apple-touch-icon.png">
+
+<!-- Schema.org structured data -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ProfessionalService",
+  "name": "click.storm51",
+  "description": "Photographe professionnel spécialisé en mariage, portrait et événements",
+  "provider": {
+    "@type": "Person",
+    "name": "Eloi",
+    "jobTitle": "Photographe Professionnel"
+  },
+  "areaServed": {
+    "@type": "Place",
+    "name": "Marne, France"
+  },
+  "address": {
+    "@type": "PostalAddress",
+    "addressRegion": "Grand Est",
+    "addressCountry": "FR"
+  },
+    "telephone": "+33 6 23 14 14 05",
+  "email": "jeannoseloi@gmail.com",
+  "url": "https://clickstorm51.fr",
+  "priceRange": "€€",
+  "serviceType": ["Photographie de mariage", "Portrait professionnel", "Photographie d'événements", "Photographie corporate"]
+}
+</script>
+
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<!-- GDPR Cookie Banner -->
+<div class="cookie-banner" id="cookieBanner">
+    <div class="cookie-content">
+        <div class="cookie-text">
+            <h3>🍪 Respect de votre vie privée</h3>
+            <p>Nous utilisons des cookies pour améliorer votre expérience sur notre site. En continuant votre navigation, vous acceptez notre utilisation des cookies.</p>
+        </div>
+        <div class="cookie-buttons">
+            <button class="btn btn-primary cookie-btn" onclick="acceptCookies()">Accepter</button>
+            <button class="btn btn-secondary cookie-btn" onclick="showCookieSettings()">Paramètres</button>
+            <button class="btn btn-secondary cookie-btn" onclick="testCookies()" style="display: none;" id="testCookiesBtn">🧪 Test</button>
+        </div>
+    </div>
+</div>
+
+<!-- Loading Screen -->
+<div class="loading-screen" id="loadingScreen">
+    <div class="loading-logo">click.storm51</div>
+    <div class="loading-bar">
+        <div class="loading-progress"></div>
+    </div>
+    <p style="color: var(--text-secondary);">Eloi Photographe • Chargement...</p>
+</div>
+
+<!-- Custom Cursor -->
+<div class="cursor" id="cursor"></div>
+<div class="cursor-follower" id="cursorFollower"></div>
+
+<!-- Header -->
+<header class="header" id="header">
+    <nav class="nav">
+        <a href="#home" class="logo">click.storm51</a>
+        <ul class="nav-menu" id="navMenu">
+            <li><a href="#home" class="nav-link active">Accueil</a></li>
+            <li><a href="#about" class="nav-link">À Propos</a></li>
+            <li><a href="#portfolio" class="nav-link">Portfolio</a></li>
+            <li><a href="#testimonials" class="nav-link">Témoignages</a></li>
+            <li><a href="#services" class="nav-link">Services</a></li>
+            <li><a href="#faq" class="nav-link">FAQ</a></li>
+            <li><a href="#contact" class="nav-link">Contact</a></li>
+        </ul>
+        <div class="nav-controls">
+            <button class="theme-toggle" id="themeToggle" title="Changer le thème">🌙</button>
+            <button class="nav-toggle" id="navToggle">☰</button>
+        </div>
+    </nav>
+</header>
+
+<!-- Hero Section -->
+<section class="hero" id="home">
+    <div class="hero-bg"></div>
+    <div class="hero-content">
+        <div class="hero-badge">
+            <span>Photographe Freelance • Disponible</span>
+        </div>
+        <h1 class="hero-title">
+            <span class="highlight">click.storm51</span><br>
+            L'art de capturer <span class="highlight">l'émotion</span>
+        </h1>
+        <p class="hero-subtitle">
+            Photographe passionné spécialisé dans les mariages, portraits et événements.
+            Créateur d'images authentiques qui racontent votre histoire unique.
+        </p>
+        <div class="hero-buttons">
+            <a href="#portfolio" class="btn btn-primary">
+                <span>Voir Mon Travail</span>
+                <span>→</span>
+            </a>
+            <a href="#contact" class="btn btn-secondary">
+                <span>Me Contacter</span>
+                <span>✉</span>
+            </a>
+        </div>
+    </div>
+    <div class="scroll-indicator">
+        <span>Scroll</span>
+        <div class="scroll-line"></div>
+    </div>
+</section>
+
+<!-- About Section -->
+<section class="about" id="about">
+    <div class="about-content">
+        <div class="about-text">
+            <h2>Mon <span class="highlight">Histoire</span></h2>
+            <p>
+                Passionné par l'art de capturer l'émotion pure, je transforme vos moments les plus précieux
+                en souvenirs éternels. Basé dans la région 51, je voyage partout en France pour immortaliser
+                votre histoire.
+            </p>
+            <p>
+                Mon approche se base sur la spontanéité et l'authenticité. Chaque clic de mon objectif
+                révèle la beauté naturelle de l'instant, sans artifice, juste l'émotion à l'état pur.
+            </p>
+            <p>
+                Que ce soit pour votre mariage, un portrait corporate ou un événement familial,
+                je m'adapte à votre univers pour créer des images qui vous ressemblent.
+            </p>
+
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-number" data-target="200">0</div>
+                    <div class="stat-label">Clients Satisfaits</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" data-target="50000">0</div>
+                    <div class="stat-label">Photos Prises</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" data-target="6">0</div>
+                    <div class="stat-label">Années d'Expérience</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" data-target="15">0</div>
+                    <div class="stat-label">Récompenses</div>
+                </div>
+            </div>
+        </div>
+        <div class="about-image">
+            <img loading="lazy" src="https://images.unsplash.com/photo-1542038784456-1ea8e732d2b9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="Eloi - Photographe click.storm51" width="1000" height="600">
+        </div>
+    </div>
+</section>
+
+<!-- Portfolio Section -->
+<section class="portfolio" id="portfolio">
+    <div class="section-header">
+        <h2>Mon <span class="highlight">Portfolio</span></h2>
+        <p>Une sélection de mes meilleurs travaux. Chaque image raconte une histoire unique,
+           capture une émotion authentique et révèle la beauté de l'instant.</p>
+    </div>
+
+    <div class="portfolio-filters">
+        <button class="filter-btn active" data-filter="all">Tout Voir</button>
+        <button class="filter-btn" data-filter="wedding">Mariage</button>
+        <button class="filter-btn" data-filter="portrait">Portrait</button>
+        <button class="filter-btn" data-filter="event">Événement</button>
+        <button class="filter-btn" data-filter="corporate">Corporate</button>
+    </div>
+
+    <div class="portfolio-grid" id="portfolioGrid">
+        <div class="portfolio-item" data-category="wedding">
+            <div class="portfolio-tag">Mariage</div>
+            <img loading="lazy" src="https://images.unsplash.com/photo-1519741497674-611481863552?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Mariage romantique" width="800" height="1000">
+            <div class="portfolio-overlay">
+                <div class="portfolio-info">
+                    <h3>Mariage Romantique</h3>
+                    <p>Château des Crayères • Reims</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="portfolio-item" data-category="portrait">
+            <div class="portfolio-tag">Portrait</div>
+            <img loading="lazy" src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" alt="Portrait professionnel" width="600" height="750">
+            <div class="portfolio-overlay">
+                <div class="portfolio-info">
+                    <h3>Portrait Corporate</h3>
+                    <p>Session Studio • Épernay</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="portfolio-item" data-category="event">
+            <div class="portfolio-tag">Événement</div>
+            <img loading="lazy" src="https://images.unsplash.com/photo-1511795409834-ef04bbd61622?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=700&q=80" alt="Événement corporatif" width="700" height="875">
+            <div class="portfolio-overlay">
+                <div class="portfolio-info">
+                    <h3>Gala d'Entreprise</h3>
+                    <p>Centre des Congrès • Châlons</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="portfolio-item" data-category="wedding">
+            <div class="portfolio-tag">Mariage</div>
+            <img loading="lazy" src="https://images.unsplash.com/photo-1465495976277-4387d4b0e4a6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=650&q=80" alt="Cérémonie champêtre" width="650" height="812">
+            <div class="portfolio-overlay">
+                <div class="portfolio-info">
+                    <h3>Cérémonie Champêtre</h3>
+                    <p>Vignobles de Champagne</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="portfolio-item" data-category="corporate">
+            <div class="portfolio-tag">Corporate</div>
+            <img loading="lazy" src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" alt="Campagne corporate" width="600" height="750">
+            <div class="portfolio-overlay">
+                <div class="portfolio-info">
+                    <h3>Campagne Corporate</h3>
+                    <p>Maison de Champagne</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="portfolio-item" data-category="portrait">
+            <div class="portfolio-tag">Portrait</div>
+            <img loading="lazy" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="Portrait artistique" width="500" height="625">
+            <div class="portfolio-overlay">
+                <div class="portfolio-info">
+                    <h3>Portrait Artistique</h3>
+                    <p>Lumière Naturelle</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="portfolio-item" data-category="event">
+            <div class="portfolio-tag">Événement</div>
+            <img loading="lazy" src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=750&q=80" alt="Concert live" width="750" height="937">
+            <div class="portfolio-overlay">
+                <div class="portfolio-info">
+                    <h3>Concert Live</h3>
+                    <p>Festival de Musique</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="portfolio-item" data-category="wedding">
+            <div class="portfolio-tag">Mariage</div>
+            <img loading="lazy" src="https://images.unsplash.com/photo-1606800052052-a08af7148866?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=550&q=80" alt="Séance engagement" width="550" height="687">
+            <div class="portfolio-overlay">
+                <div class="portfolio-info">
+                    <h3>Séance Engagement</h3>
+                    <p>Cathédrale Notre-Dame</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Testimonials Section -->
+<section class="testimonials" id="testimonials">
+    <div class="section-header">
+        <h2>Ce que disent mes <span class="highlight">Clients</span></h2>
+        <p>La satisfaction de mes clients est ma plus belle récompense. Découvrez leurs témoignages.</p>
+        <a href="/laisser-avis.html" style="display: inline-block; margin-top: 1rem; padding: 0.75rem 1.5rem; background: linear-gradient(135deg, #ff6b35, #ff8c5a); color: white; text-decoration: none; border-radius: 25px; font-weight: 600;">
+            ✍️ Laisser un avis
+        </a>
+    </div>
+
+    <div class="testimonials-grid" id="testimonials-grid">
+        <!-- Les avis seront chargés dynamiquement ici -->
+    </div>
+</section>
+
+<!-- Services Section -->
+<section class="services" id="services">
+    <div class="section-header">
+        <h2>Mes <span class="highlight">Services</span></h2>
+        <p>Des prestations sur-mesure adaptées à tous vos besoins photographiques.
+           Chaque projet est unique et mérite une approche personnalisée.</p>
+    </div>
+
+    <div class="services-grid">
+        <div class="service-card">
+            <div class="service-content">
+                <div class="service-icon">💒</div>
+                <h3>Mariage</h3>
+                <p>Couverture complète de votre jour J. Reportage discret et émotionnel de vos préparatifs jusqu'à la soirée dansante.</p>
+                <div class="service-price">Sur devis personnalisé</div>
+            </div>
+        </div>
+
+        <div class="service-card">
+            <div class="service-content">
+                <div class="service-icon">👤</div>
+                <h3>Portrait</h3>
+                <p>Sessions portrait individuelles ou en groupe. Studio ou extérieur, pour vos réseaux, CV ou plaisir personnel.</p>
+                <div class="service-price">Sur devis</div>
+            </div>
+        </div>
+
+        <div class="service-card">
+            <div class="service-content">
+                <div class="service-icon">🎉</div>
+                <h3>Événements</h3>
+                <p>Anniversaires, baptêmes, communions, fêtes familiales. Capturer tous vos moments de bonheur en toute discrétion.</p>
+                <div class="service-price">Sur devis</div>
+            </div>
+        </div>
+
+        <div class="service-card">
+            <div class="service-content">
+                <div class="service-icon">🏢</div>
+                <h3>Corporate</h3>
+                <p>Photos d'entreprise, événements professionnels, portraits d'équipe. Valorisez votre image de marque.</p>
+                <div class="service-price">Sur projet</div>
+            </div>
+        </div>
+
+        <div class="service-card">
+            <div class="service-content">
+                <div class="service-icon">📸</div>
+                <h3>Commercial</h3>
+                <p>Photographies produits, campagnes publicitaires, contenus pour réseaux sociaux. Boostez vos ventes.</p>
+                <div class="service-price">Sur devis</div>
+            </div>
+        </div>
+
+        <div class="service-card">
+            <div class="service-content">
+                <div class="service-icon">🎨</div>
+                <h3>Artistique</h3>
+                <p>Projets créatifs, collaborations artistiques, expositions. Explorons ensemble de nouveaux territoires visuels.</p>
+                <div class="service-price">Sur projet</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FAQ Section -->
+<section class="faq" id="faq">
+    <div class="section-header">
+        <h2>Questions <span class="highlight">Fréquentes</span></h2>
+        <p>Trouvez rapidement les réponses à vos questions les plus courantes.</p>
+    </div>
+
+    <div class="faq-container">
+        <div class="faq-item">
+            <button class="faq-question">
+                <span>Combien de temps à l'avance dois-je réserver ?</span>
+                <span class="faq-icon">+</span>
+            </button>
+            <div class="faq-answer">
+                <p>Je recommande de réserver au moins 2-3 mois à l'avance pour les mariages et événements importants. Pour les portraits et sessions corporate, 2-3 semaines suffisent généralement.</p>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <button class="faq-question">
+                <span>Quels sont vos délais de livraison ?</span>
+                <span class="faq-icon">+</span>
+            </button>
+            <div class="faq-answer">
+                <p>Vous recevrez une galerie preview dans les 48-72h. Les photos finales retouchées sont livrées sous 2-3 semaines pour les mariages, 1-2 semaines pour les autres prestations.</p>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <button class="faq-question">
+                <span>Combien de photos finales vais-je recevoir ?</span>
+                <span class="faq-icon">+</span>
+            </button>
+            <div class="faq-answer">
+                <p>Pour un mariage complet : 400-600 photos. Portrait : 30-50 photos. Événement : 200-400 photos selon la durée. Toutes les photos sont retouchées et livrées en haute résolution.</p>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <button class="faq-question">
+                <span>Vos tarifs incluent-ils les déplacements ?</span>
+                <span class="faq-icon">+</span>
+            </button>
+            <div class="faq-answer">
+                <p>Les déplacements dans la Marne (51) sont inclus. Pour les destinations plus éloignées, des frais de déplacement peuvent s'appliquer selon la distance.</p>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <button class="faq-question">
+                <span>Puis-je avoir les photos non retouchées ?</span>
+                <span class="faq-icon">+</span>
+            </button>
+            <div class="faq-answer">
+                <p>Je ne fournis que les photos finales retouchées qui représentent mon travail artistique. Chaque image est soigneusement sélectionnée et post-traitée pour garantir la meilleure qualité.</p>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <button class="faq-question">
+                <span>Proposez-vous des forfaits personnalisés ?</span>
+                <span class="faq-icon">+</span>
+            </button>
+            <div class="faq-answer">
+                <p>Absolument ! Chaque projet est unique. Je peux adapter mes prestations selon vos besoins spécifiques et votre budget. Contactez-moi pour un devis sur-mesure.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Contact Section -->
+<section class="contact" id="contact">
+    <div class="section-header">
+        <h2>Parlons de Votre <span class="highlight">Projet</span></h2>
+        <p>Une idée, un événement à immortaliser ? Contactons-nous pour donner vie à votre vision.</p>
+    </div>
+
+    <div class="contact-content">
+        <form class="contact-form" id="contactForm">
+            <div class="form-group">
+                <label for="name">Nom complet *</label>
+                <input type="text" id="name" name="name" required>
+                <div class="form-error" id="name-error"></div>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email *</label>
+                <input type="email" id="email" name="email" required>
+                <div class="form-error" id="email-error"></div>
+            </div>
+
+            <div class="form-group">
+                <label for="phone">Téléphone</label>
+                <input type="tel" id="phone" name="phone" placeholder="+33 6 00 00 00 00">
+                <div class="form-error" id="phone-error"></div>
+            </div>
+
+            <div class="form-group">
+                <label for="service">Type de service</label>
+                <select id="service" name="service">
+                    <option value="">Sélectionner un service</option>
+                    <option value="wedding">Mariage</option>
+                    <option value="portrait">Portrait</option>
+                    <option value="event">Événement</option>
+                    <option value="corporate">Corporate</option>
+                    <option value="commercial">Commercial</option>
+                    <option value="artistic">Artistique</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="budget">Budget approximatif</label>
+                <select id="budget" name="budget">
+                    <option value="">Sélectionner une fourchette</option>
+                    <option value="200-500">200€ - 500€</option>
+                    <option value="500-1000">500€ - 1000€</option>
+                    <option value="1000-2000">1000€ - 2000€</option>
+                    <option value="2000+">2000€+</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="message">Décrivez votre projet *</label>
+                <textarea id="message" name="message" placeholder="Parlez-moi de votre vision, date souhaitée, lieu, nombre de personnes..." required></textarea>
+                <div class="form-error" id="message-error"></div>
+            </div>
+
+            <button type="submit" class="btn btn-primary" style="width: 100%;" id="submitBtn">
+                <span>Envoyer le Message</span>
+                <span>→</span>
+            </button>
+        </form>
+
+        <div class="contact-info">
+            <div class="contact-card">
+                <h3>📧 Email</h3>
+                <p>jeannoseloi@gmail.com</p>
+                <p>Réponse garantie sous 24h</p>
+            </div>
+
+            <div class="contact-card">
+                <h3>📱 Téléphone</h3>
+                <p>+33 6 23 14 14 05</p>
+                <p>Lun-Sam: 9h-20h</p>
+            </div>
+
+            <div class="contact-card">
+                <h3>📍 Zone d'Intervention</h3>
+                <p>Marne (51) et région Grand Est</p>
+                <p>Déplacements France entière</p>
+            </div>
+
+            <div class="contact-card">
+                <h3>⚡ Délais</h3>
+                <p>Galerie preview: 48-72h</p>
+                <p>Photos finales: 2-3 semaines</p>
+            </div>
+
+            <div class="contact-card">
+                <h3>💼 Informations Légales</h3>
+                <p>SIRET: XXX XXX XXX XXXXX</p>
+                <p>Assurance RC Professionnelle</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+    <div class="footer-content">
+        <div class="footer-section">
+            <h3>click.storm51</h3>
+            <p>Photographe professionnel passionné, basé dans la Marne. Spécialisé en mariage, portrait et événements.</p>
+            <div class="social-links">
+                <a href="#" class="social-link" title="Instagram" aria-label="Instagram">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                    </svg>
+                </a>
+                <a href="#" class="social-link" title="Facebook" aria-label="Facebook">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                    </svg>
+                </a>
+                <a href="#" class="social-link" title="LinkedIn" aria-label="LinkedIn">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                    </svg>
+                </a>
+                <a href="https://wa.me/33623141405" target="_blank" class="social-link" title="WhatsApp" aria-label="WhatsApp">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+                    </svg>
+                </a>
+            </div>
+        </div>
+
+        <div class="footer-section">
+            <h4>Services</h4>
+            <ul>
+                <li><a href="#services">Mariage</a></li>
+                <li><a href="#services">Portrait</a></li>
+                <li><a href="#services">Événements</a></li>
+                <li><a href="#services">Corporate</a></li>
+            </ul>
+        </div>
+
+        <div class="footer-section">
+            <h4>Informations</h4>
+            <ul>
+                <li><a href="#about">À Propos</a></li>
+                <li><a href="#faq">FAQ</a></li>
+                <li><a href="#contact">Contact</a></li>
+                <li><a href="/mentions-legales.html">Mentions Légales</a></li>
+                <li><a href="/admin.html" style="opacity: 0.5;">Administration</a></li>
+            </ul>
+        </div>
+
+        <div class="footer-section">
+            <h4>Contact</h4>
+            <p>📧 jeannoseloi@gmail.com</p>
+            <p>📱 +33 6 23 14 14 05</p>
+            <p>📍 Marne (51), France</p>
+        </div>
+    </div>
+
+    <div class="footer-bottom">
+        <p>&copy; 2024 click.storm51 • Eloi Photographe • Tous droits réservés</p>
+        <p>Créé avec passion dans la Marne • <a href="/politique-confidentialite.html">Politique de confidentialité</a></p>
+    </div>
+</footer>
+
+<!-- Portfolio Lightbox -->
+<div class="lightbox" id="lightbox">
+    <div class="lightbox-content">
+        <button class="lightbox-close" onclick="closeLightbox()">&times;</button>
+        <button class="lightbox-prev" onclick="previousImage()">‹</button>
+        <button class="lightbox-next" onclick="nextImage()">›</button>
+        <img id="lightbox-image" src="" alt="">
+        <div class="lightbox-info">
+            <h3 id="lightbox-title"></h3>
+            <p id="lightbox-description"></p>
+        </div>
+    </div>
+</div>
+
+<script src="assets/js/main.js"></script>
+</body>
+</html>
