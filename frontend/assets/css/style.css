@@ -110,32 +110,14 @@ body {
 }
 
 /* Cursor Effect */
+/* Désactivation du curseur personnalisé */
 body {
-    cursor: none;
+    cursor: auto;
 }
 
-.cursor {
-    position: fixed;
-    width: 8px;
-    height: 8px;
-    background: var(--accent);
-    border-radius: 50%;
-    pointer-events: none;
-    z-index: 9999;
-    mix-blend-mode: difference;
-    transition: transform 0.2s ease;
-}
+.cursor { display: none !important; }
 
-.cursor-follower {
-    position: fixed;
-    width: 40px;
-    height: 40px;
-    border: 1px solid var(--accent);
-    border-radius: 50%;
-    pointer-events: none;
-    z-index: 9998;
-    transition: all 0.3s ease;
-}
+.cursor-follower { display: none !important; }
 
 .cursor.expand {
     transform: scale(3);
@@ -175,6 +157,16 @@ body {
     -webkit-text-fill-color: transparent;
     margin-bottom: 2rem;
     animation: pulse 2s ease-in-out infinite;
+}
+
+/* Mobile adjustments for loading logo */
+@media (max-width: 480px) {
+    .loading-logo {
+        font-size: 2.2rem;
+        margin-bottom: 1.25rem;
+        animation: pulse 2s ease-in-out infinite;
+    }
+    .loading-bar { width: 200px; }
 }
 
 .loading-bar {
